@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit-element'
 
-customElements.define('player-app', class PlayerApp extends LitElement {
+customElements.define('host-app', class HostApp extends LitElement {
 	firstUpdated() {
 		const socket = io('http://localhost:8081')
 	}
