@@ -21,19 +21,18 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
   }
 
   render() {
-    return html`
-      ${this.isNamed ?
-        html``:
-        html`
-          <p>${this.state.name}</p>
-          <input
-            type='text'
-            placeholder="Enter name..."
-            value=${this.name}
-            @change=${e => this.name = e.target.value}
-          />
-          <button @click=${this.submit}>Submit</button>
-       `}
-    `
+    return this.state.name === '' ?
+      html`
+        <input
+          type='text'
+          placeholder="Enter name..."
+          value=${this.name}
+          @change=${e => this.name = e.target.value}
+        />
+        <button @click=${this.submit}>Submit</button>`:
+      html`
+        <p>${this.state.name}</p>
+        ${this.state.isLeader && html`
+          <button @click=${this.actions.startGame}>Everybody's In!</button>`}`
   }
 })
