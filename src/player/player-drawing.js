@@ -24,11 +24,16 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
     `
   }
   render() {
-    return html`
-      <div id='draw-container'>
-        <draw-canvas .state=${this.state} .actions=${this.actions}></draw-canvas>
+    return this.state.isDrawingSubmitted ?
+      html`<p>Wait everyone else to finish</p>`:
+      html`<div id='draw-container'>
+        <p>${this.state.prompt}</p>
+        <draw-canvas
+          .state=${this.state}
+          .actions=${this.actions}
+          width=200
+          height=400></draw-canvas>
         <button @click=${this.actions.submitDrawing}>Submit</button>
-      </div>
-      `
+      </div>`
   }
 })

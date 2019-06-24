@@ -4,6 +4,7 @@ module.exports = class Player {
     this.isLeader = isLeader
     this.score = 0
     this.prompt = ''
+    this.drawing = []
     this.isDrawingSubmitted = false
     this.isGuessSubmitted = false
     this.isPickSubmitted = false

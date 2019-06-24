@@ -24,22 +24,24 @@ const store = {
 	Actions: update => ({
 		submitName: name => {
 			socket.emit('player-join', name, data => {
-				if (data === false) {
-					console.log('invalid name or wrong phase')
+				if (data.error) {
+					console.log(data.error.msg)
 				} else {
 					update(data)
 				}
 			})
 		},
 
-		//TODO: How to use Patchinko to push vertex onto drawing array?
-		addVertex: (x, y, isEnd) => update({ drawing: [...drawing, { x, y, isEnd }] }),
+		addVertex: (x, y, isEnd) => update({ drawing: O(d => [...d, { x, y, isEnd }]) }),
 		submitDrawing: drawing => {
-			console.log('submitDrawing called')
+			socket.emit('submit-drawing', drawing, data => {
+				if (data.error) console.error(data.error.msg)
+				else update(data)
+			})
 		},
 
 		startGame: () => socket.emit('start-game'),
-		changePhase: phase => update({ phase }),
+		changePhase: data => { console.log(data); update(data) },
 	})
 }
 
@@ -61,7 +63,7 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 	firstUpdated() {
 		states.map(state => this.state = { ...state })
 
-		socket.on('phase-change', phase => actions.changePhase(phase))
+		socket.on('change-phase', data => actions.changePhase(data))
 	}
 
 	render() {
