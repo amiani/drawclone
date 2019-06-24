@@ -15,6 +15,7 @@ const store = {
 		isLeader: false,
 		score: 0,
 		prompt: '',
+		drawing: [],
 		isDrawingSubmitted: false,
 		isGuessSubmitted: false,
 		isPickSubmitted: false
@@ -29,6 +30,10 @@ const store = {
 					update(data)
 				}
 			})
+		},
+
+		submitDrawing: drawing => {
+			console.log('submitDrawing called')
 		},
 
 		startGame: () => socket.emit('start-game'),

@@ -1,4 +1,6 @@
-import { LitElement, html } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
+
+import DrawCanvas from './draw-canvas'
 
 export default customElements.define('player-drawing', class PlayerDrawing extends LitElement {
   static get properties() {
@@ -13,7 +15,20 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
     this.actions = {}
   }
 
+  static get styles() {
+    return css`
+      #draw-container {
+        display: flex;
+        flex-direction: column;
+      }
+    `
+  }
   render() {
-    return html`<p>player drawing</p>`
+    return html`
+      <div id='draw-container'>
+        <draw-canvas .state=${this.state} .actions=${this.actions}></draw-canvas>
+        <button @click=${this.actions.submitDrawing}>Submit</button>
+      </div>
+      `
   }
 })
