@@ -33,7 +33,7 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
           .actions=${this.actions}
           width=200
           height=400></draw-canvas>
-        <button @click=${this.actions.submitDrawing}>Submit</button>
+        <button @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Submit</button>
       </div>`
   }
 })

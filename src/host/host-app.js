@@ -57,7 +57,7 @@ customElements.define('host-app', class HostApp extends LitElement {
 					[GamePhase.DRAWING]: html`<host-drawing .state=${this.state} .actions=${actions}></host-drawing>`,
 					[GamePhase.GUESSING]: html`<host-guessing .state=${this.state} .actions=${actions}></host-guessing>`,
 					[GamePhase.PICKING]: html`<host-picking .state=${this.state} .actions=${actions}></host-picking>`,
-					[GamePhase.SCOREBOARD]: html`<p>Player Scoreboard Phase</p>`
+					[GamePhase.SCOREBOARD]: html`<host-scoreboard .state=${this.state} .actions=${actions}></host-scoreboard>`
 				}[this.state.phase]}
 			</div>
 		`

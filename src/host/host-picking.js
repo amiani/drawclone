@@ -17,5 +17,6 @@ export default customElements.define('host-picking', class HostPicking extends L
     return css``
   }
   render() {
+    return html`<p>Picking Phase</p>`
   }
 })

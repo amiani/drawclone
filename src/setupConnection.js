@@ -15,11 +15,11 @@ module.exports = io => {
     })
 
     socket.on('host-join', (data, ack) => {
-      if (!game.host && game.phase === GamePhase.LOBBY) {
+      if (game.host) {
+        ack(game.host)
+      } else {
         const host = game.addHost(socket)
         ack(host)
-      } else {
-        ack({ error: { msg: 'there already is a host or wrong phase' } })
       }
     })
   })

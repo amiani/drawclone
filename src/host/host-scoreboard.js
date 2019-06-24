@@ -17,5 +17,6 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     return css``
   }
   render() {
+    return html`<p>Scoreboard Phase</p>`
   }
 })

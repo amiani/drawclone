@@ -17,5 +17,6 @@ export default customElements.define('host-drawing', class HostDrawing extends L
     return css``
   }
   render() {
+    return html`<p>Drawing Phase</p>`
   }
 })

@@ -7,14 +7,20 @@ class Game {
   constructor(roomName, io) {
     this.roomName = roomName
     this.io = io
-    this.phase = 0
+    this._phase = GamePhase.LOBBY
     this.host = false
     this.players = []
     this.prompts = ['blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones']
   }
 
+  get phase() { return this._phase }
+  set phase(phase) {
+    this._phase = phase
+    this.host.phase = phase
+  }
+
   addHost(socket) {
-    this.host = new Host(socket)
+    this.host = new Host(socket, this.players)
     this.registerHostListeners(this.host.socket)
     return this.host
   }
@@ -28,7 +34,7 @@ class Game {
     const player = new Player(socket, name, isLeader)
     this.registerPlayerListeners(player)
     this.players.push(player)
-    this.host.socket.emit('player-joined', { players: this.players })
+    if (this.host) this.host.socket.emit('player-joined', { players: this.players })
     return player
   }
   registerPlayerListeners(player) {
@@ -53,22 +59,22 @@ class Game {
     })
 
     socket.on('submit-drawing', (drawing, ack) => {
-      if (player.drawing.length === 0) {
+      if (player.drawing.length === 0 && drawing.length > 0) {
         player.drawing = drawing
-        if (this.players.reduce(p => p.drawing.length !== 0)) {  //if all players have submitted drawings
+        if (this.players.reduce((acc, curr) => acc && (curr.drawing.length !== 0), true)) {  //if all players have submitted drawings
           this.phase = GamePhase.GUESSING
           this.io.emit('change-phase', { phase: this.phase })
         }
         ack({ isDrawingSubmitted: true })
       } else {
-        ack({ error: { msg: `already have drawing for player ${player.name}`}})
+        ack({ error: { msg: `already have drawing or got no drawing for player ${player.name}`}})
       }
     })
 
     socket.on('submit-guess', (guess, ack) => {
       if (player.guess === '') {
         player.guess = guess
-        if (this.players.reduce(p => p.guess !== '')) {
+        if (this.players.reduce((acc, curr) => acc && curr.guess !== ''), true) {
           this.phase = GamePhase.PICKING
           const pickPhaseData = {
             phase: this.phase,
@@ -85,7 +91,7 @@ class Game {
     socket.on('submit-pick', (pick, ack) => {
       if (player.pick === '') {
         player.pick = pick
-        if (this.players.reduce(p => p.pick !== '')) {
+        if (this.players.reduce((acc, curr) => acc && curr.pick !== ''), true) {
           this.phase = GamePhase.SCOREBOARD
           this.io.emit('change-phase', { phase: this.phase })
         }

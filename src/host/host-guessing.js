@@ -17,5 +17,6 @@ export default customElements.define('host-guessing', class HostGuessing extends
     return css``
   }
   render() {
+    return html`<p>Guessing Phase</p>`
   }
 })

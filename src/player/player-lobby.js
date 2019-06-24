@@ -31,8 +31,9 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
         />
         <button @click=${this.submit}>Submit</button>`:
       html`
-        <p>${this.state.name}</p>
-        ${this.state.isLeader && html`
-          <button @click=${this.actions.startGame}>Everybody's In!</button>`}`
+        <p>You are: ${this.state.name}</p>
+        ${this.state.isLeader ? 
+          html`<button @click=${this.actions.startGame}>Everybody's In!</button>` :
+          html`<p>sit tight...</p>`}`
   }
 })
