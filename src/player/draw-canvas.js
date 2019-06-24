@@ -14,7 +14,6 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
     this.width = 200
     this.height = 300
     this.isDrawing = false
-    this.vertices = []
   }
 
   firstUpdated() {
@@ -25,20 +24,12 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
 
   mousedown(e) {
     this.isDrawing = true
-    this.vertices.push({
-      x: e.clientX - this.canvasOffset.left,
-      y: e.clientY - this.canvasOffset.top,
-      isEnd: false
-    })
+    this.actions.addVertex(e.clientX - this.canvasOffset.left, e.clientY - this.canvasOffset.top, false)
   }
 
   mousemove(e) {
     if (this.isDrawing) {
-      this.vertices.push({
-        x: e.clientX - this.canvasOffset.left,
-        y: e.clientY - this.canvasOffset.top,
-        isEnd: true
-      })
+      this.actions.addVertex(e.clientX - this.canvasOffset.left, e.clientY - this.canvasOffset.top, true)
       this.redraw()
     }
   }
@@ -55,7 +46,7 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
     this.ctx.strokeStyle = '#ee855e'
     this.ctx.lineJoin = 'round'
     this.ctx.lineWidth = 5
-    this.vertices.forEach(vertex => {
+    this.state.drawing.forEach(vertex => {
       if (vertex.isEnd) {
         this.ctx.lineTo(vertex.x, vertex.y)
       } else {

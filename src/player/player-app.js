@@ -32,6 +32,8 @@ const store = {
 			})
 		},
 
+		//TODO: How to use Patchinko to push vertex onto drawing array?
+		addVertex: (x, y, isEnd) => update({ drawing: [...drawing, { x, y, isEnd }] }),
 		submitDrawing: drawing => {
 			console.log('submitDrawing called')
 		},
