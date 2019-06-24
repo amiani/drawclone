@@ -1,7 +1,8 @@
-const game = require('./Game');
+const Game = require('./Game');
 const GamePhase = require('./GamePhase')
 
 module.exports = io => {
+  const game = new Game('drawclone', io)
   io.on('connection', socket => {
     console.log('client connected')
     socket.on('player-join', (name, ack) => {

@@ -17,8 +17,12 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
     return css``
   }
   render() {
-    return html`<ul>
-      ${this.state.players.map(p => html`<li>${p.name}</li>`)}
-    </ul>`
+    return html`
+      <div>
+        <p>Lobby</p>
+        <ul>
+          ${this.state.players.map(p => html`<li>${p.name}</li>`)}
+        </ul>
+      </div>`
   }
 })
