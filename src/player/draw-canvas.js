@@ -30,7 +30,7 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
   mousemove(e) {
     if (this.isDrawing) {
       this.actions.addVertex(e.clientX - this.canvasOffset.left, e.clientY - this.canvasOffset.top, true)
-      this.redraw()
+      this.draw()
     }
   }
 
@@ -41,7 +41,7 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
     this.isDrawing = false
   }
 
-  redraw() {
+  draw() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     this.ctx.strokeStyle = '#ee855e'
     this.ctx.lineJoin = 'round'
@@ -52,6 +52,7 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
       } else {
         this.ctx.stroke()
         this.ctx.beginPath()
+        this.ctx.moveTo(vertex.x, vertex.y)//is this necessary?
       }
     })
   }

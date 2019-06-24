@@ -13,7 +13,6 @@ const store = {
 	Initial: () => ({
 		phase: GamePhase.LOBBY,
 		players: [],
-		drawing: [],
 		guesses: [],
 		picks: []
 	}),
@@ -47,6 +46,7 @@ customElements.define('host-app', class HostApp extends LitElement {
 		socket.emit('host-join', 'host', this.sync)
 		socket.on('change-phase', this.sync)
 		socket.on('player-joined', this.sync)
+		socket.on('sync', this.sync)
 	}
 
 	render() {

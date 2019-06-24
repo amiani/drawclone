@@ -29,6 +29,13 @@ class Game {
 
   }
 
+  syncHost() {
+    this.host.socket.emit('sync', {
+      phase: this.phase,
+      players: this.players,
+    })
+  }
+
   addPlayer(socket, name) {
     const isLeader = this.players.length === 0
     const player = new Player(socket, name, isLeader)
@@ -64,6 +71,7 @@ class Game {
         if (this.players.reduce((acc, curr) => acc && (curr.drawing.length !== 0), true)) {  //if all players have submitted drawings
           this.phase = GamePhase.GUESSING
           this.io.emit('change-phase', { phase: this.phase })
+          this.syncHost()
         }
         ack({ isDrawingSubmitted: true })
       } else {
