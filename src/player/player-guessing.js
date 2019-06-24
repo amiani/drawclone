@@ -11,9 +11,19 @@ export default customElements.define('player-guessing', class PlayerGuessing ext
     super()
     this.state = {}
     this.actions = {}
+    this.guess = ''
   }
 
   render() {
-    return html`<p>player guessing</p>`
+    return this.state.isGuessSubmitted ?
+      html`<p>Wait for everyone else</p>` :
+      html`<div>
+        <input
+          type='text'
+          placeholder='What is that...?'
+          .value=${this.guess}
+          @change=${e => this.guess = e.target.value}/>
+        <button @click=${e=>this.actions.submitGuess(this.guess)}>Submit Guess</button>
+      </div>`
   }
 })

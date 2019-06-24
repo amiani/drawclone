@@ -16,6 +16,7 @@ const store = {
 		score: 0,
 		prompt: '',
 		drawing: [],
+		guesses: [],
 		isDrawingSubmitted: false,
 		isGuessSubmitted: false,
 		isPickSubmitted: false
@@ -31,6 +32,7 @@ const store = {
 				}
 			})
 		},
+		startGame: () => socket.emit('start-game'),
 
 		addVertex: (x, y, isEnd) => update({ drawing: O(d => [...d, { x, y, isEnd }]) }),
 		submitDrawing: drawing => {
@@ -40,8 +42,21 @@ const store = {
 			})
 		},
 
-		startGame: () => socket.emit('start-game'),
-		changePhase: data => { console.log(data); update(data) },
+		submitGuess: guess => {
+			socket.emit('submit-guess', guess, data => {
+				if (data.error) console.error(data.error.msg)
+				else update(data)
+			})
+		},
+
+		submitPick: pick => {
+			socket.emit('submit-pick', pick, data => {
+				if (data.error) console.error(data.error.msg)
+				else update(data)
+			})
+		},
+
+		changePhase: data => update(data)
 	})
 }
 

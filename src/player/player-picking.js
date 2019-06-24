@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
 
 export default customElements.define('player-picking', class PlayerPicking extends LitElement {
   static get properties() {
@@ -13,7 +13,15 @@ export default customElements.define('player-picking', class PlayerPicking exten
     this.actions = {}
   }
 
+  static get styles() {
+  }
   render() {
-    return html`<p>player picking</p>`
+    return this.state.isPickSubmitted ?
+      html`<p>Wait for everyone else</p>` :
+      html`<ul id='pick-container'>
+        ${this.state.guesses.map(g => html`
+          <li @click=${e=>this.actions.submitPick(g.name)}>${g.text}</li>
+        `)}
+      </ul>`
   }
 })

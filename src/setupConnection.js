@@ -39,9 +39,43 @@ module.exports = io => {
     socket.on('submit-drawing', (drawing, ack) => {
       if (player.drawing.length === 0) {
         player.drawing = drawing
+        if (store.players.reduce(p => p.drawing.length !== 0)) {  //if all players have submitted drawings
+          store.phase = GamePhase.GUESSING
+          io.emit('change-phase', { phase: store.phase })
+        }
         ack({ isDrawingSubmitted: true })
       } else {
         ack({ error: { msg: `already have drawing for player ${player.name}`}})
+      }
+    })
+
+    socket.on('submit-guess', (guess, ack) => {
+      if (player.guess === '') {
+        player.guess = guess
+        if (store.players.reduce(p => p.guess !== '')) {
+          store.phase = GamePhase.PICKING
+          const pickPhaseData = {
+            phase: store.phase,
+            guesses: store.players.map(p => ({ name: p.name, text: p.guess }))
+          }
+          io.emit('change-phase', pickPhaseData)
+        }
+        ack({ isGuessSubmitted: true })
+      } else {
+        ack({ error: { msg: `already have guess for player ${player.name}`}})
+      }
+    })
+
+    socket.on('submit-pick', (pick, ack) => {
+      if (player.pick === '') {
+        player.pick = pick
+        if (store.players.reduce(p => p.pick !== '')) {
+          store.phase = GamePhase.SCOREBOARD
+          io.emit('change-phase', { phase: store.phase })
+        }
+        ack({ isPickSubmitted: true })
+      } else {
+        ack({ error: { msg: `already have pick for player ${player.name}` } })
       }
     })
   })
