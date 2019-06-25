@@ -6,6 +6,7 @@ import HostLobby from './host-lobby'
 import HostDrawing from './host-drawing'
 import HostGuessing from './host-guessing'
 import HostPicking from './host-picking'
+import HostScoreboard from './host-scoreboard'
 
 const socket = io('http://localhost:8081')
 
@@ -14,7 +15,8 @@ const store = {
 		phase: GamePhase.LOBBY,
 		players: [],
 		guesses: [],
-		picks: []
+		picks: [],
+		countdown: 30,
 	}),
 
 	Actions: update => ({
@@ -38,15 +40,11 @@ customElements.define('host-app', class HostApp extends LitElement {
 		this.state = {}
 	}
 
-	sync(data) { actions.sync(data) }
-
 	firstUpdated() {
 		states.map(state => this.state = { ...state })
 
-		socket.emit('host-join', 'host', this.sync)
-		socket.on('change-phase', this.sync)
-		socket.on('player-joined', this.sync)
-		socket.on('sync', this.sync)
+		socket.emit('host-join', 'host', actions.sync)
+		socket.on('host-sync', actions.sync)
 	}
 
 	render() {

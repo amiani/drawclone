@@ -17,6 +17,10 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     return css``
   }
   render() {
-    return html`<p>Scoreboard Phase</p>`
+    return html`
+      <p>Scores</p>
+      <ul>
+        ${this.state.players.map(p => html`<li>${p.name}: ${p.score}</li>`)}
+      </ul>`
   }
 })

@@ -10,7 +10,9 @@ class Game {
     this._phase = GamePhase.LOBBY
     this.host = false
     this.players = []
-    this.prompts = ['blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones']
+    this.prompts = ['blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones'],
+    this.countdown = 5
+    this.countdownTimer
   }
 
   get phase() { return this._phase }
@@ -30,9 +32,10 @@ class Game {
   }
 
   syncHost() {
-    this.host.socket.emit('sync', {
+    this.host.socket.emit('host-sync', {
       phase: this.phase,
       players: this.players,
+      countdown: this.countdown,
     })
   }
 
@@ -41,37 +44,22 @@ class Game {
     const player = new Player(socket, name, isLeader)
     this.registerPlayerListeners(player)
     this.players.push(player)
-    if (this.host) this.host.socket.emit('player-joined', { players: this.players })
+    if (this.host) this.host.socket.emit('host-sync', { players: this.players })
     return player
   }
   registerPlayerListeners(player) {
     const { socket } = player
     socket.on('start-game', () => {
       if (this.phase === 0 && this.host) {
-        this.phase = GamePhase.DRAWING
-        this.io.clients((err, clients) => {
-          if (err) throw err
-
-          const pickedPrompts = []
-          clients.forEach(clientId => {
-            let promptIndex
-            do {
-              promptIndex = Math.floor(Math.random() * this.prompts.length)
-            } while (pickedPrompts.includes(promptIndex))
-            pickedPrompts.push(promptIndex)
-            this.io.to(`${clientId}`).emit('change-phase', { phase: GamePhase.DRAWING, prompt: this.prompts[promptIndex] })
-          })
-        })
+        this.startDrawingPhase()
       }
     })
 
     socket.on('submit-drawing', (drawing, ack) => {
       if (player.drawing.length === 0 && drawing.length > 0) {
         player.drawing = drawing
-        if (this.players.reduce((acc, curr) => acc && (curr.drawing.length !== 0), true)) {  //if all players have submitted drawings
-          this.phase = GamePhase.GUESSING
-          this.io.emit('change-phase', { phase: this.phase })
-          this.syncHost()
+        if (this.players.reduce((acc, curr) => acc && (curr.drawing.length !== 0), true)) { //if all players have submitted drawings
+          this.startGuessingPhase()
         }
         ack({ isDrawingSubmitted: true })
       } else {
@@ -82,13 +70,8 @@ class Game {
     socket.on('submit-guess', (guess, ack) => {
       if (player.guess === '') {
         player.guess = guess
-        if (this.players.reduce((acc, curr) => acc && curr.guess !== ''), true) {
-          this.phase = GamePhase.PICKING
-          const pickPhaseData = {
-            phase: this.phase,
-            guesses: this.players.map(p => ({ name: p.name, text: p.guess }))
-          }
-          this.io.emit('change-phase', pickPhaseData)
+        if (this.players.reduce((acc, curr) => acc && (curr.guess !== ''), true)) {
+          this.startPickingPhase()
         }
         ack({ isGuessSubmitted: true })
       } else {
@@ -99,15 +82,79 @@ class Game {
     socket.on('submit-pick', (pick, ack) => {
       if (player.pick === '') {
         player.pick = pick
-        if (this.players.reduce((acc, curr) => acc && curr.pick !== ''), true) {
-          this.phase = GamePhase.SCOREBOARD
-          this.io.emit('change-phase', { phase: this.phase })
+        if (this.players.reduce((acc, curr) => acc && (curr.pick !== ''), true)) {
+          this.startScoreboardPhase()
         }
         ack({ isPickSubmitted: true })
       } else {
         ack({ error: { msg: `already have pick for player ${player.name}` } })
       }
     })
+  }
+
+  startDrawingPhase() {
+    this.phase = GamePhase.DRAWING
+    this.syncHost()
+    this.startCountdown()
+    this.io.clients((err, clients) => {
+      if (err) throw err
+
+      const pickedPrompts = []
+      clients.forEach(clientId => {
+        let promptIndex
+        do {
+          promptIndex = Math.floor(Math.random() * this.prompts.length)
+        } while (pickedPrompts.includes(promptIndex))
+        pickedPrompts.push(promptIndex)
+        this.io.to(`${clientId}`).emit('player-sync', { phase: GamePhase.DRAWING, prompt: this.prompts[promptIndex] })
+      })
+    })
+  }
+
+  startGuessingPhase() {
+    this.phase = GamePhase.GUESSING
+    this.startCountdown()
+    this.io.emit('player-sync', { phase: this.phase })
+    this.syncHost()
+  }
+
+  startPickingPhase() {
+    this.phase = GamePhase.PICKING
+    this.startCountdown()
+    const pickPhaseData = {
+      phase: this.phase,
+      guesses: this.players.map(p => ({ name: p.name, text: p.guess }))
+    }
+    this.io.emit('player-sync', pickPhaseData)
+    this.syncHost()
+  }
+
+  startScoreboardPhase() {
+    this.phase = GamePhase.SCOREBOARD
+    this.io.emit('player-sync', { phase: this.phase })
+    this.syncHost()
+  }
+
+  startCountdown() {
+    clearInterval(this.countdownTimer)
+    this.countdown = 5
+    this.countdownTimer = setInterval(() => {
+      if (this.countdown-- <= 0) {
+        clearInterval(this.countdownTimer)
+        switch(this.phase) {
+          case GamePhase.DRAWING:
+            this.startGuessingPhase()
+            break
+          case GamePhase.GUESSING:
+            this.startPickingPhase()
+            break
+          case GamePhase.PICKING:
+            this.startScoreboardPhase()
+            break
+        }
+      }
+      this.syncHost()
+    }, 1000)
   }
 }
 module.exports = Game

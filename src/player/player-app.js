@@ -56,7 +56,7 @@ const store = {
 			})
 		},
 
-		changePhase: data => update(data)
+		sync: data => update(data)
 	})
 }
 
@@ -77,8 +77,7 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 
 	firstUpdated() {
 		states.map(state => this.state = { ...state })
-
-		socket.on('change-phase', data => actions.changePhase(data))
+		socket.on('player-sync', actions.sync)
 	}
 
 	render() {

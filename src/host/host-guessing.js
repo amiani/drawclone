@@ -33,6 +33,8 @@ export default customElements.define('host-guessing', class HostGuessing extends
     `
   }
   render() {
-    return html`<canvas id='drawing' width=${this.width} height=${this.height}></canvas>`
+    return html`
+      <canvas id='drawing' width=${this.width} height=${this.height}></canvas>
+      <p>${this.state.countdown}</p>`
   }
 })
