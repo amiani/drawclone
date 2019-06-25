@@ -17,6 +17,7 @@ const store = {
 		prompt: '',
 		drawing: [],
 		guesses: [],
+		isCurrPlayer: false,
 		isDrawingSubmitted: false,
 		isGuessSubmitted: false,
 		isPickSubmitted: false

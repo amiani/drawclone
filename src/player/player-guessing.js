@@ -15,6 +15,9 @@ export default customElements.define('player-guessing', class PlayerGuessing ext
   }
 
   render() {
+    if (this.state.isCurrPlayer)
+      return html`<p>It's your drawing!</p>`
+
     return this.state.isGuessSubmitted ?
       html`<p>Wait for everyone else</p>` :
       html`<div>

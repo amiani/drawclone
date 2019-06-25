@@ -16,6 +16,9 @@ export default customElements.define('player-picking', class PlayerPicking exten
   static get styles() {
   }
   render() {
+    if (this.state.isCurrPlayer)
+      return html`<p>It's your drawing!</p>`
+
     return this.state.isPickSubmitted ?
       html`<p>Wait for everyone else</p>` :
       html`<ul id='pick-container'>
