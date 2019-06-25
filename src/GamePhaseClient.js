@@ -3,5 +3,6 @@ export default {
   DRAWING: 1,
   GUESSING: 2,
   PICKING: 3,
-  SCOREBOARD: 4
+  SCOREBOARD: 4,
+  ENDLOBBY: 5
 }

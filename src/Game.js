@@ -34,6 +34,9 @@ class Game {
 
   }
 
+  syncPlayers() {
+    this.players.forEach(player => player.socket.emit('player-sync', player))
+  }
   syncHost() {
     this.host.socket.emit('host-sync', {
       phase: this.phase,
@@ -45,7 +48,7 @@ class Game {
 
   addPlayer(socket, name) {
     const isLeader = this.players.length === 0
-    const player = new Player(socket, name, isLeader)
+    const player = new Player(socket, name, isLeader, ()=>this.phase)
     this.registerPlayerListeners(player)
     this.players.push(player)
     if (this.host) this.host.socket.emit('host-sync', { players: this.players })
@@ -97,12 +100,31 @@ class Game {
         ack({ error: { msg: `already have pick for player ${player.name}` } })
       }
     })
+
+    socket.on('restart-game', () => {
+      this.turn = -1
+      this.playerOrder = false
+      this.players.forEach(player => {
+        player.score = 0
+        player.drawing = []
+        player.isDrawingSubmitted = false
+        player.isGuessSubmitted = false
+        player.isPickSubmitted = false
+      })
+      this.syncPlayers()
+      this.startDrawingPhase()
+    })
+
+    socket.on('new-players', () => {
+      this.phase = GamePhase.LOBBY
+      this.io.emit('player-sync', { phase: this.phase })
+    })
   }
 
   startDrawingPhase() {
     this.phase = GamePhase.DRAWING
     this.syncHost()
-    this.startCountdown()
+    this.startCountdown(10)
     const pickedPrompts = []
     this.players.forEach(player => {
       let promptIndex
@@ -131,7 +153,7 @@ class Game {
     currPlayer.isGuessSubmitted = true
     currPlayer.isPickSubmitted = true
     currPlayer.isCurrPlayer = true
-    this.startCountdown()
+    this.startCountdown(10)
     this.players.forEach(player => player.socket.emit('player-sync', {
       phase: this.phase,
       isCurrPlayer: player.isCurrPlayer
@@ -141,7 +163,7 @@ class Game {
 
   startPickingPhase() {
     this.phase = GamePhase.PICKING
-    this.startCountdown()
+    this.startCountdown(5)
     const guesses = this.players.map(p => ({
       name: p.name,
       text: p.isCurrPlayer ? p.prompt : p.guess
@@ -152,6 +174,7 @@ class Game {
 
   startScoreboardPhase() {
     this.phase = GamePhase.SCOREBOARD
+    this.startCountdown(10)
     const currPlayer = this.players[this.currPlayerIndex]
     this.players.forEach(player => {
       if (player !== currPlayer) {
@@ -160,20 +183,28 @@ class Game {
           player.score += 1000
         } else {
           const pickedPlayer = this.players.find(p => p.name === player.pick)
-          pickedPlayer.score += 500
+          pickedPlayer && (pickedPlayer.score += 500)
         }
       }
       player.isGuessSubmitted = false
       player.isPickSubmitted = false
       player.isCurrPlayer = false
+      player.guess = ''
+      player.pick = ''
     })
-    this.io.emit('player-sync', { phase: this.phase })
+    this.syncPlayers()
     this.syncHost()
   }
 
-  startCountdown() {
+  startEndLobbyPhase() {
+    this.phase = GamePhase.ENDLOBBY
+    this.syncPlayers()
+    this.syncHost()
+  }
+
+  startCountdown(time) {
     clearInterval(this.countdownTimer)
-    this.countdown = 10
+    this.countdown = time
     this.countdownTimer = setInterval(() => {
       if (this.countdown-- <= 0) {
         clearInterval(this.countdownTimer)
@@ -186,6 +217,12 @@ class Game {
             break
           case GamePhase.PICKING:
             this.startScoreboardPhase()
+            break
+          case GamePhase.SCOREBOARD:
+            if (this.turn >= this.players.length-1)
+              this.startEndLobbyPhase()
+            else
+              this.startGuessingPhase()
             break
         }
       }

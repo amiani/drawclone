@@ -2,7 +2,7 @@
   "name": "draw-clone",
   "license": "MIT",
   "scripts": {
-    "start": "owc-dev-server",
+    "start": "owc-dev-server -h 0.0.0.0",
     "lint:eslint": "eslint --ext .js,.html .",
     "format:eslint": "eslint --ext .js,.html . --fix",
     "lint:prettier": "prettier \"**/*.js\" --list-different || (echo '↑↑ these files are not prettier formatted ↑↑' && exit 1)",

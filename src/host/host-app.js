@@ -7,6 +7,7 @@ import HostDrawing from './host-drawing'
 import HostGuessing from './host-guessing'
 import HostPicking from './host-picking'
 import HostScoreboard from './host-scoreboard'
+import HostEndLobby from './host-endlobby'
 
 const socket = io('http://localhost:8081')
 
@@ -56,7 +57,8 @@ customElements.define('host-app', class HostApp extends LitElement {
 					[GamePhase.DRAWING]: html`<host-drawing .state=${this.state} .actions=${actions}></host-drawing>`,
 					[GamePhase.GUESSING]: html`<host-guessing .state=${this.state} .actions=${actions}></host-guessing>`,
 					[GamePhase.PICKING]: html`<host-picking .state=${this.state} .actions=${actions}></host-picking>`,
-					[GamePhase.SCOREBOARD]: html`<host-scoreboard .state=${this.state} .actions=${actions}></host-scoreboard>`
+					[GamePhase.SCOREBOARD]: html`<host-scoreboard .state=${this.state} .actions=${actions}></host-scoreboard>`,
+					[GamePhase.ENDLOBBY]: html`<host-endlobby .state=${this.state} .actions=${actions}></host-endlobby>`
 				}[this.state.phase]}
 			</div>
 		`

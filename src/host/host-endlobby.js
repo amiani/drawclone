@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit-element'
 
-export default customElements.define('host-scoreboard', class HostScoreboard extends LitElement {
+export default customElements.define('host-endlobby', class HostEndLobby extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
@@ -23,7 +23,6 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
         ${this.state.players
           .sort((a, b) => b.score - a.score)
           .map(p => html`<li>${p.name}: ${p.score}</li>`)}
-      </ul>
-      <p>${this.state.countdown}</p>`
+      </ul>`
   }
 })

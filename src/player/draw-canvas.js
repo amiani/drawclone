@@ -23,22 +23,19 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
     this.ctx = this.canvas.getContext('2d')
   }
 
-  mousedown(e) {
+  drawstart(e) {
     this.isDrawing = true
     this.actions.addVertex(e.clientX - this.canvasOffset.left, e.clientY - this.canvasOffset.top, false)
   }
 
-  mousemove(e) {
+  drawmove(e) {
     if (this.isDrawing) {
       this.actions.addVertex(e.clientX - this.canvasOffset.left, e.clientY - this.canvasOffset.top, true)
       draw(this.ctx, this.state.drawing)
     }
   }
 
-  mouseup(e) {
-    this.isDrawing = false
-  }
-  mouseleave(e) {
+  drawend(e) {
     this.isDrawing = false
   }
 
@@ -55,9 +52,12 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
         id='touchme'
         width=${this.width}
         height=${this.height}
-        @mousedown=${this.mousedown}
-        @mousemove=${this.mousemove}
-        @mouseup=${this.mouseup}
-        @mouseleave=${this.mouseleave}></canvas>`
+        @mousedown=${this.drawstart}
+        @touchstart=${this.drawstart}
+        @mousemove=${this.drawmove}
+        @touchmove=${this.drawmove}
+        @mouseup=${this.drawend}
+        @mouseleave=${this.drawend}
+        @touchend=${this.drawend}></canvas>`
   }
 })

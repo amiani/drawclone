@@ -6,8 +6,9 @@ import PlayerLobby from './player-lobby'
 import PlayerDrawing from './player-drawing'
 import PlayerGuessing from './player-guessing'
 import PlayerPicking from './player-picking'
+import PlayerEndLobby from './player-endlobby'
 
-const socket = io('http://localhost:8081')
+const socket = io('http://192.168.0.105:8081')
 const store = {
 	Initial: () => ({
 		phase: GamePhase.LOBBY,
@@ -57,6 +58,9 @@ const store = {
 			})
 		},
 
+		restartGame: () => socket.emit('restart-game'),
+		newPlayers: () => socket.emit('new-players'),
+
 		sync: data => update(data)
 	})
 }
@@ -89,7 +93,8 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 					[GamePhase.DRAWING]: html`<player-drawing .state=${this.state} .actions=${actions}></player-drawing>`,
 					[GamePhase.GUESSING]: html`<player-guessing .state=${this.state} .actions=${actions}></player-guessing>`,
 					[GamePhase.PICKING]: html`<player-picking .state=${this.state} .actions=${actions}></player-picking>`,
-					[GamePhase.SCOREBOARD]: html`<p>Player Scoreboard Phase</p>`
+					[GamePhase.SCOREBOARD]: html`<p>Player Scoreboard Phase</p>`,
+					[GamePhase.ENDLOBBY]: html`<player-endlobby .state=${this.state} .actions=${actions}></player-endlobby>`,
 				}[this.state.phase]}
 			</div>
 		`
