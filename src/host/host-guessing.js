@@ -22,7 +22,7 @@ export default customElements.define('host-guessing', class HostGuessing extends
   }
 
   updated() {
-    draw(this.ctx, this.state.players[0].drawing)
+    draw(this.ctx, this.state.players[this.state.currPlayer].drawing)
   }
 
   static get styles() {

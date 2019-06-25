@@ -14,6 +14,7 @@ const store = {
 	Initial: () => ({
 		phase: GamePhase.LOBBY,
 		players: [],
+		currPlayer: 0,
 		guesses: [],
 		picks: [],
 		countdown: 30,

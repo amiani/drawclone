@@ -10,6 +10,9 @@ class Game {
     this._phase = GamePhase.LOBBY
     this.host = false
     this.players = []
+    this.playerOrder = false
+    this.turn = -1
+    this.currPlayer = 0
     this.prompts = ['blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones'],
     this.countdown = 5
     this.countdownTimer
@@ -36,6 +39,7 @@ class Game {
       phase: this.phase,
       players: this.players,
       countdown: this.countdown,
+      currPlayer: this.currPlayer,
     })
   }
 
@@ -96,23 +100,29 @@ class Game {
     this.phase = GamePhase.DRAWING
     this.syncHost()
     this.startCountdown()
-    this.io.clients((err, clients) => {
-      if (err) throw err
-
-      const pickedPrompts = []
-      clients.forEach(clientId => {
-        let promptIndex
-        do {
-          promptIndex = Math.floor(Math.random() * this.prompts.length)
-        } while (pickedPrompts.includes(promptIndex))
-        pickedPrompts.push(promptIndex)
-        this.io.to(`${clientId}`).emit('player-sync', { phase: GamePhase.DRAWING, prompt: this.prompts[promptIndex] })
-      })
+    const pickedPrompts = []
+    this.players.forEach(player => {
+      let promptIndex
+      do {
+        promptIndex = Math.floor(Math.random() * this.prompts.length)
+      } while (pickedPrompts.includes(promptIndex))
+      pickedPrompts.push(promptIndex)
+      player.socket.emit('player-sync', { phase: GamePhase.DRAWING, prompt: this.prompts[promptIndex] })
     })
   }
 
   startGuessingPhase() {
+    if (!this.playerOrder) {
+      this.playerOrder = Array(this.players.length).fill(0).map((e, i) => i)
+      for (let i = this.playerOrder.length-1; i != 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        const t = this.playerOrder[i]
+        this.playerOrder[i] = this.playerOrder[j]
+        this.playerOrder[j] = t
+      }
+    }
     this.phase = GamePhase.GUESSING
+    this.currPlayer = this.playerOrder[++this.turn]
     this.startCountdown()
     this.io.emit('player-sync', { phase: this.phase })
     this.syncHost()
