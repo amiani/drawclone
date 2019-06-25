@@ -20,7 +20,9 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     return html`
       <p>Scores</p>
       <ul>
-        ${this.state.players.map(p => html`<li>${p.name}: ${p.score}</li>`)}
+        ${this.state.players
+          .sort((a, b) => a.score - b.score)
+          .map(p => html`<li>${p.name}: ${p.score}</li>`)}
       </ul>`
   }
 })
