@@ -66,10 +66,10 @@ class Game {
       if (player.drawing.length === 0 && drawing.length > 0) {
         player.drawing = drawing
         player.isDrawingSubmitted = true
+        ack({ isDrawingSubmitted: true })
         if (this.players.reduce((acc, curr) => acc && curr.isDrawingSubmitted, true)) { //if all players have submitted drawings
           this.startGuessingPhase()
         }
-        ack({ isDrawingSubmitted: true })
       } else {
         ack({ error: { msg: `already have drawing or got no drawing for player ${player.name}`}})
       }
@@ -79,10 +79,10 @@ class Game {
       if (player.guess === '') {
         player.guess = guess
         player.isGuessSubmitted = true
+        ack({ isGuessSubmitted: true })
         if (this.players.reduce((acc, curr) => acc && curr.isGuessSubmitted, true)) {
           this.startPickingPhase()
         }
-        ack({ isGuessSubmitted: true })
       } else {
         ack({ error: { msg: `already have guess for player ${player.name}`}})
       }
@@ -92,10 +92,10 @@ class Game {
       if (player.pick === '') {
         player.pick = pick
         player.isPickSubmitted = true
+        ack({ isPickSubmitted: true })
         if (this.players.reduce((acc, curr) => acc && curr.isPickSubmitted, true)) {
           this.startScoreboardPhase()
         }
-        ack({ isPickSubmitted: true })
       } else {
         ack({ error: { msg: `already have pick for player ${player.name}` } })
       }
