@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit-element'
+import { WiredButton } from 'wired-elements'
 
 import DrawCanvas from './draw-canvas'
 
@@ -28,12 +29,14 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
       html`<p>Wait everyone else to finish</p>`:
       html`<div id='draw-container'>
         <p>${this.state.prompt}</p>
-        <draw-canvas
-          .state=${this.state}
-          .actions=${this.actions}
-          width=200
-          height=400></draw-canvas>
-        <button @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Submit</button>
+        <wired-card elevation=2>
+          <draw-canvas
+            .state=${this.state}
+            .actions=${this.actions}
+            width=200
+            height=400></draw-canvas>
+        </wired-card>
+        <wired-button @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Submit</wired-button>
       </div>`
   }
 })

@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
 import O from 'patchinko/constant.mjs'
 
 import GamePhase from '../GamePhaseClient'
@@ -86,6 +86,13 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 		socket.on('player-sync', actions.sync)
 	}
 
+	static get styles() {
+		return css`
+			.app {
+				width: 100vw;
+			}
+		`
+	}
 	render() {
 		return html`
 			<div class="app">

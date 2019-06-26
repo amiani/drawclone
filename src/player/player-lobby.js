@@ -1,4 +1,5 @@
-import { LitElement, html } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
+import { WiredButton, WiredInput } from 'wired-elements'
 
 export default customElements.define('player-lobby', class PlayerLobby extends LitElement {
   static get properties() {
@@ -20,20 +21,31 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
     this.actions.submitName(this.name)
   }
 
+  static get styles() {
+    return css`
+      .input-button-container {
+        display: flex;
+      }
+      wired-input {
+        width: 100%;
+      }
+    `
+  }
   render() {
     return this.state.name === '' ?
       html`
-        <input
-          type='text'
-          placeholder="Enter name..."
-          value=${this.name}
-          @change=${e => this.name = e.target.value}
-        />
-        <button @click=${this.submit}>Submit</button>`:
+        <div class='input-button-container'>
+          <wired-input
+            type='text'
+            placeholder="Enter name..."
+            value=${this.name}
+            @change=${e => this.name = e.target.value}></wired-input>
+          <wired-button @click=${this.submit}>Submit</wired-button>
+        </div>` :
       html`
         <p>You are: ${this.state.name}</p>
         ${this.state.isLeader ? 
-          html`<button @click=${this.actions.startGame}>Everybody's In!</button>` :
+          html`<wired-button @click=${this.actions.startGame}>Everybody's In!</wired-button>` :
           html`<p>sit tight...</p>`}`
   }
 })

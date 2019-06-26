@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit-element'
+import { WiredButton } from 'wired-elements'
 
 export default customElements.define('player-picking', class PlayerPicking extends LitElement {
   static get properties() {
@@ -25,7 +26,7 @@ export default customElements.define('player-picking', class PlayerPicking exten
       html`<ul id='pick-container'>
         ${this.state.guesses.map(g => g.name === this.state.name ? 
           null :
-          html`<li @click=${e=>this.actions.submitPick(g.name)}>${g.text}</li>`
+          html`<li><wired-button @click=${e=>this.actions.submitPick(g.name)}>${g.text}</wired-button></li>`
         )}
       </ul>`
   }
