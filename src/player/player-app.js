@@ -68,6 +68,7 @@ const store = {
 const update = flyd.stream()
 const states = flyd.scan(O, store.Initial(), update)
 const actions = store.Actions(update, socket)
+meiosisTracer({ streams: [states] })
 
 customElements.define('player-app', class PlayerApp extends LitElement {
 	static get properties() {
@@ -96,6 +97,7 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 					[GamePhase.SCOREBOARD]: html`<p>Player Scoreboard Phase</p>`,
 					[GamePhase.ENDLOBBY]: html`<player-endlobby .state=${this.state} .actions=${actions}></player-endlobby>`,
 				}[this.state.phase]}
+				<div id='tracer'></div>
 			</div>
 		`
 	}
