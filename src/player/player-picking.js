@@ -15,6 +15,11 @@ export default customElements.define('player-picking', class PlayerPicking exten
   }
 
   static get styles() {
+    return css`
+      #pick-container {
+        list-style: none;
+      }
+    `
   }
   render() {
     if (this.state.isCurrPlayer)
@@ -23,11 +28,12 @@ export default customElements.define('player-picking', class PlayerPicking exten
     console.log(this.state.isPickSubmitted)
     return this.state.isPickSubmitted ?
       html`<p>Wait for everyone else</p>` :
-      html`<ul id='pick-container'>
-        ${this.state.guesses.map(g => g.name === this.state.name ? 
-          null :
-          html`<li><wired-button @click=${e=>this.actions.submitPick(g.name)}>${g.text}</wired-button></li>`
-        )}
-      </ul>`
+      html`
+        <ul id='pick-container'>
+          ${this.state.guesses.map(g => g.name === this.state.name ? 
+            null :
+            html`<li><wired-button @click=${e=>this.actions.submitPick(g.name)}>${g.text}</wired-button></li>`
+          )}
+        </ul>`
   }
 })

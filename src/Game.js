@@ -43,6 +43,7 @@ class Game {
       players: this.players,
       countdown: this.countdown,
       currPlayer: this.currPlayerIndex,
+      guesses: this.players.map(p => p.isCurrPlayer ? p.prompt : p.guess)
     })
   }
 

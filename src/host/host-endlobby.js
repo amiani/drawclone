@@ -14,7 +14,11 @@ export default customElements.define('host-endlobby', class HostEndLobby extends
   }
 
   static get styles() {
-    return css``
+    return css`
+      ul {
+        list-style: none;
+      }
+    `
   }
   render() {
     return html`

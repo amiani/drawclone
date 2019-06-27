@@ -14,11 +14,17 @@ export default customElements.define('host-picking', class HostPicking extends L
   }
 
   static get styles() {
-    return css``
+    return css`
+      ul {
+        list-style: none;
+      }
+    `
   }
   render() {
     return html`
-      <p>Picking Phase</p>
+      <ul>
+        ${this.state.guesses.map(g => html`<li>${g}</li>`)}
+      </ul>
       <p>${this.state.countdown}</p>`
   }
 })

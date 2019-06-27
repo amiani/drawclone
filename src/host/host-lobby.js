@@ -14,7 +14,14 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
   }
 
   static get styles() {
-    return css``
+    return css`
+      ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+      }
+    `
   }
   render() {
     return html`

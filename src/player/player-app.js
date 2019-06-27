@@ -90,6 +90,8 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 		return css`
 			.app {
 				width: 100vw;
+				display: flex;
+				justify-content: center;
 			}
 		`
 	}

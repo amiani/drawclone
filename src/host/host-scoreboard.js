@@ -14,7 +14,11 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
   }
 
   static get styles() {
-    return css``
+    return css`
+      ul {
+        list-style: none;
+      }
+    `
   }
   render() {
     return html`
