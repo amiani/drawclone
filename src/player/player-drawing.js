@@ -23,6 +23,10 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
         flex-direction: column;
         align-items: center;
       }
+
+      p {
+        text-align: center;
+      }
     `
   }
   render() {

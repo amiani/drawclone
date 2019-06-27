@@ -19,6 +19,10 @@ export default customElements.define('player-picking', class PlayerPicking exten
       #pick-container {
         list-style: none;
       }
+      
+      p {
+        text-align: center;
+      }
     `
   }
   render() {

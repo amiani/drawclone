@@ -4,12 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="Description" content="Put your description here.">
+  <link rel="manifest" href="./manifest.json">
   <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       font-family: 'Gloria Hallelujah', cursive;
+    }
+    * {
+      box-sizing: border-box;
     }
   </style>
   <title>Draw Clone</title>
@@ -20,6 +24,23 @@
   <script src="../../node_modules/flyd/flyd.js"></script>
   <script src="../../node_modules/meiosis-tracer/dist/meiosis-tracer.js"></script>
   <script type="module" src="player-app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/src/player/sw.js').then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault()
+      console.log('install prompt')
+      e.prompt()
+    })
+  </script>
 </body>
 
 </html>

@@ -1,0 +1,19 @@
+{
+  "short_name": "Draw Clone",
+  "name": "Draw Clone",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "start_url": "/src/player/player.html",
+  "icons": [
+    {
+      "src": "../../images/robot-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../../images/stick-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

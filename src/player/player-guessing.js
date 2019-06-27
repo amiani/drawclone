@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
 import { WiredButton, WiredInput } from 'wired-elements'
 
 export default customElements.define('player-guessing', class PlayerGuessing extends LitElement {
@@ -15,6 +15,13 @@ export default customElements.define('player-guessing', class PlayerGuessing ext
     this.guess = ''
   }
 
+  static get styles() {
+    return css`
+      p {
+        text-align: center;
+      }
+    `
+  }
   render() {
     if (this.state.isCurrPlayer)
       return html`<p>It's your drawing!</p>`
