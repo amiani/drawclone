@@ -27,20 +27,32 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
   addVertex(x, y, isEnd) {
     this.actions.addVertex((x - this.canvasOffset.left) / this.width, (y - this.canvasOffset.top) / this.height, isEnd)
   }
-  drawstart(e) {
+
+  handleMouseDown(e) {
     this.isDrawing = true
     this.addVertex(e.clientX, e.clientY, false)
   }
 
-  drawmove(e) {
+  handleMouseMove(e) {
     if (this.isDrawing) {
       this.addVertex(e.clientX, e.clientY, true)
       draw(this.ctx, this.state.drawing)
     }
   }
 
-  drawend(e) {
+  handleMouseEnd(e) {
     this.isDrawing = false
+  }
+
+  handleTouchStart(e) {
+    e.preventDefault()
+    this.addVertex(e.changedTouches[0].clientX, e.changedTouches[0].clientY, false)
+  }
+
+  handleTouchMove(e) {
+    e.preventDefault()
+    this.addVertex(e.changedTouches[0].clientX, e.changedTouches[0].clientY, true)
+    draw(this.ctx, this.state.drawing)
   }
 
   render() {
@@ -49,12 +61,12 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
         id='touchme'
         width=${this.width}
         height=${this.height}
-        @mousedown=${this.drawstart}
-        @touchstart=${this.drawstart}
-        @mousemove=${this.drawmove}
-        @touchmove=${this.drawmove}
-        @mouseup=${this.drawend}
-        @mouseleave=${this.drawend}
-        @touchend=${this.drawend}></canvas>`
+        @mousedown=${this.handleMouseDown}
+        @mousemove=${this.handleMouseMove}
+        @mouseup=${this.handleMouseEnd}
+        @mouseleave=${this.handleMouseEnd}
+        @touchstart=${this.handleTouchStart}
+        @touchmove=${this.handleTouchMove}
+        @touchend=${this.handleTouchEnd}></canvas>`
   }
 })
