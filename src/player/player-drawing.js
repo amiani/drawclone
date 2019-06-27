@@ -21,6 +21,7 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
       #draw-container {
         display: flex;
         flex-direction: column;
+        align-items: center;
       }
     `
   }
@@ -33,8 +34,8 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
           <draw-canvas
             .state=${this.state}
             .actions=${this.actions}
-            width=200
-            height=400></draw-canvas>
+            width=${window.innerWidth*.8}
+            height=${window.innerHeight*.75}></draw-canvas>
         </wired-card>
         <wired-button @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Submit</wired-button>
       </div>`

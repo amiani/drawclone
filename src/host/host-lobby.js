@@ -18,7 +18,8 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
       ul {
         list-style: none;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         padding: 0;
       }
     `

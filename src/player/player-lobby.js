@@ -29,6 +29,11 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
       wired-input {
         width: 100%;
       }
+      #lobby-wait-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
     `
   }
   render() {
@@ -43,9 +48,11 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
           <wired-button @click=${this.submit}>Submit</wired-button>
         </div>` :
       html`
-        <p>You are: ${this.state.name}</p>
-        ${this.state.isLeader ? 
-          html`<wired-button @click=${this.actions.startGame}>Everybody's In!</wired-button>` :
-          html`<p>sit tight...</p>`}`
+        <div id='lobby-wait-container'>
+          <p>You are: ${this.state.name}</p>
+          ${this.state.isLeader ? 
+            html`<wired-button @click=${this.actions.startGame}>Everybody's In!</wired-button>` :
+            html`<p>sit tight...</p>`}
+        </div>`
   }
 })

@@ -24,14 +24,17 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
     this.ctx = this.canvas.getContext('2d')
   }
 
+  addVertex(x, y, isEnd) {
+    this.actions.addVertex((x - this.canvasOffset.left) / this.width, (y - this.canvasOffset.top) / this.height, isEnd)
+  }
   drawstart(e) {
     this.isDrawing = true
-    this.actions.addVertex(e.clientX - this.canvasOffset.left, e.clientY - this.canvasOffset.top, false)
+    this.addVertex(e.clientX, e.clientY, false)
   }
 
   drawmove(e) {
     if (this.isDrawing) {
-      this.actions.addVertex(e.clientX - this.canvasOffset.left, e.clientY - this.canvasOffset.top, true)
+      this.addVertex(e.clientX, e.clientY, true)
       draw(this.ctx, this.state.drawing)
     }
   }

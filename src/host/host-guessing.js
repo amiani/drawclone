@@ -12,8 +12,6 @@ export default customElements.define('host-guessing', class HostGuessing extends
     super()
     this.state = {}
     this.actions = {}
-    this.width = 200
-    this.height = 400
   }
 
   firstUpdated() {
@@ -34,7 +32,7 @@ export default customElements.define('host-guessing', class HostGuessing extends
   }
   render() {
     return html`
-      <canvas id='drawing' width=${this.width} height=${this.height}></canvas>
+      <canvas id='drawing' width=${window.innerWidth*.8} height=${window.innerHeight*.8}></canvas>
       <p>${this.state.countdown}</p>`
   }
 })
