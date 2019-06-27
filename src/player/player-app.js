@@ -91,6 +91,7 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 			.app {
 				width: 100vw;
 				display: flex;
+				flex-direction: column;
 				justify-content: center;
 			}
 		`
@@ -106,7 +107,6 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 					[GamePhase.SCOREBOARD]: html`<p>Player Scoreboard Phase</p>`,
 					[GamePhase.ENDLOBBY]: html`<player-endlobby .state=${this.state} .actions=${actions}></player-endlobby>`,
 				}[this.state.phase]}
-				<div id='tracer'></div>
 			</div>
 		`
 	}

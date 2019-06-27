@@ -5,6 +5,7 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
   static get properties() {
     return {
       name: { type: String },
+      wiredInputWidth: { type: Number },
       state: { type: Object },
       actions: { type: Object }
     }
@@ -13,6 +14,7 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
   constructor() {
     super()
     this.name = ''
+    this.wiredInputWidth = 0
     this.state = {}
     this.actions = {}
   }
@@ -21,13 +23,19 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
     this.actions.submitName(this.name)
   }
 
+  updated() {
+    this.wiredInputWidth = this.shadowRoot.querySelector('wired-input').getBoundingClientRect().width
+  }
+
   static get styles() {
     return css`
       .input-button-container {
         display: flex;
+        justify-content: space-around;
+        margin: 5px;
       }
       wired-input {
-        width: 100%;
+        flex-grow: 1;
       }
       #lobby-wait-container {
         display: flex;
@@ -44,6 +52,7 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
             type='text'
             placeholder="Enter name..."
             value=${this.name}
+            .size=${this.wiredInputWidth}
             @change=${e => this.name = e.target.value}></wired-input>
           <wired-button @click=${this.submit}>Submit</wired-button>
         </div>` :

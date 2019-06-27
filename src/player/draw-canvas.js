@@ -19,7 +19,7 @@ export default customElements.define('draw-canvas', class DrawCanvas extends Lit
   }
 
   firstUpdated() {
-    this.canvas = this.shadowRoot.getElementById('touchme')
+    this.canvas = this.shadowRoot.querySelector('#touchme')
     this.canvasOffset = this.canvas.getBoundingClientRect()
     this.ctx = this.canvas.getContext('2d')
   }
