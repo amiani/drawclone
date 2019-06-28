@@ -25,7 +25,7 @@ export default customElements.define('big-clock', class BigClock extends LitElem
     return html`
       <div id='clock-container'>
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='100%' height='100%'>
-          <circle cx='100' cy='100' r='100' fill='#ee855e'/>
+          <path d='M100,50 A50,50 0 1,0 150,100' fill='none' stroke='#ee855e' stroke-width='10'/>
         </svg>
       </div>`
   }
