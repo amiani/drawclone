@@ -34,7 +34,7 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
       html`<p>Wait everyone else to finish</p>`:
       html`<div id='draw-container'>
         <p>${this.state.prompt}</p>
-        <wired-card elevation=2>
+        <wired-card elevation=5>
           <draw-canvas
             .state=${this.state}
             .actions=${this.actions}
