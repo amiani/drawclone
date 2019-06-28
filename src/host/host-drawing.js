@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit-element'
+import BigClock from './big-clock'
 
 export default customElements.define('host-drawing', class HostDrawing extends LitElement {
   static get properties() {
@@ -17,8 +18,6 @@ export default customElements.define('host-drawing', class HostDrawing extends L
     return css``
   }
   render() {
-    return html`
-      <p>Drawing Phase</p>
-      <p>${this.state.countdown}</p>`
+    return html`<big-clock .state=${this.state} .actions=${this.actions}></big-clock>`
   }
 })
