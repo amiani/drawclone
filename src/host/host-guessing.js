@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit-element'
+import { WiredCard } from 'wired-elements'
 import draw from '../draw'
 
 export default customElements.define('host-guessing', class HostGuessing extends LitElement {
@@ -25,14 +26,16 @@ export default customElements.define('host-guessing', class HostGuessing extends
 
   static get styles() {
     return css`
-      #drawing {
+      #card {
         border: solid black 2px;
       }
     `
   }
   render() {
     return html`
-      <canvas id='drawing' width=${window.innerWidth*.8} height=${window.innerHeight*.8}></canvas>
+      <wired-card id='#card' elevation=5>
+        <canvas id='drawing' width=${window.innerWidth*.8} height=${window.innerHeight*.8}></canvas>
+      </wired-card>
       <p>${this.state.countdown}</p>`
   }
 })
