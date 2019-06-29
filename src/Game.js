@@ -14,7 +14,7 @@ class Game {
     this.turn = -1
     this.currPlayerIndex = 0
     this.prompts = ['blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones'],
-    this.countdown = 5
+    this.countdown = 30
     this.countdownTimer
   }
 
@@ -125,7 +125,7 @@ class Game {
   startDrawingPhase() {
     this.phase = GamePhase.DRAWING
     this.syncHost()
-    this.startCountdown(10)
+    this.startCountdown(30)
     const pickedPrompts = []
     this.players.forEach(player => {
       let promptIndex

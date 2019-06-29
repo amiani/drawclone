@@ -18,6 +18,6 @@ export default customElements.define('host-drawing', class HostDrawing extends L
     return css``
   }
   render() {
-    return html`<big-clock .state=${this.state} .actions=${this.actions}></big-clock>`
+    return html`<big-clock .state=${this.state} .actions=${this.actions} width=${window.innerHeight} height=${window.innerHeight}></big-clock>`
   }
 })
