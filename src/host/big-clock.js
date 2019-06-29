@@ -28,10 +28,11 @@ export default customElements.define('big-clock', class BigClock extends LitElem
     this.clockWidth = this.width*.9
     this.clockHeight = this.clockWidth
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-    this.roughClock.arc(this.width/2, this.height/2, this.clockWidth, this.clockHeight, (3/2)*Math.PI + (2*Math.PI/30)*(30-this.state.countdown), 2*Math.PI+(3/2)*Math.PI, true, {
-      stroke: 'black', strokeWidth: 9,
-      fill: '#ee855e'
-    })
+    if (this.state.countdown > 0)
+      this.roughClock.arc(this.width/2, this.height/2, this.clockWidth, this.clockHeight, (3/2)*Math.PI + (2*Math.PI/30)*(30-this.state.countdown), 2*Math.PI+(3/2)*Math.PI, true, {
+        stroke: 'black', strokeWidth: 9,
+        fill: '#ee855e'
+      })
   }
 
   static get styles() {
