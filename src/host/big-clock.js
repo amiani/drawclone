@@ -43,7 +43,6 @@ export default customElements.define('big-clock', class BigClock extends LitElem
   }
 
   render() {
-    console.log('render')
     return html`
       <div id='clock-container'>
         <canvas id='clock-canvas' width=${this.width} height=${this.height}></canvas>
