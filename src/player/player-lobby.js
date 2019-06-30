@@ -25,9 +25,15 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
 
   firstUpdated() {
     this.wiredInputWidth = this.shadowRoot.querySelector('wired-input').getBoundingClientRect().width
-    window.addEventListener('resize', () => {
-      this.wiredInputWidth = this.shadowRoot.querySelector('wired-input').getBoundingClientRect().width
-    })
+    window.addEventListener('resize', this.resetInputWidth)
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('resize', this.resetInputWidth)
+  }
+
+  resetInputWidth(e) {
+    this.wiredInputWidth = this.shadowRoot.querySelector('wired-input').getBoundingClientRect().width
   }
 
   static get styles() {
