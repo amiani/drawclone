@@ -43,7 +43,7 @@ class Game {
       players: this.players,
       countdown: this.countdown,
       currPlayer: this.currPlayerIndex,
-      guesses: this.players.map(p => p.isCurrPlayer ? p.prompt : p.guess)
+      titles: this.players.map(p => p.isCurrPlayer ? p.prompt : p.title)
     })
   }
 
@@ -69,23 +69,23 @@ class Game {
         player.isDrawingSubmitted = true
         ack({ isDrawingSubmitted: true })
         if (this.players.reduce((acc, curr) => acc && curr.isDrawingSubmitted, true)) { //if all players have submitted drawings
-          this.startGuessingPhase()
+          this.startTitleingPhase()
         }
       } else {
         ack({ error: { msg: `already have drawing or got no drawing for player ${player.name}`}})
       }
     })
 
-    socket.on('submit-guess', (guess, ack) => {
-      if (player.guess === '') {
-        player.guess = guess
-        player.isGuessSubmitted = true
-        ack({ isGuessSubmitted: true })
-        if (this.players.reduce((acc, curr) => acc && curr.isGuessSubmitted, true)) {
+    socket.on('submit-title', (title, ack) => {
+      if (player.title === '') {
+        player.title = title
+        player.isTitleSubmitted = true
+        ack({ isTitleSubmitted: true })
+        if (this.players.reduce((acc, curr) => acc && curr.isTitleSubmitted, true)) {
           this.startPickingPhase()
         }
       } else {
-        ack({ error: { msg: `already have guess for player ${player.name}`}})
+        ack({ error: { msg: `already have title for player ${player.name}`}})
       }
     })
 
@@ -109,7 +109,7 @@ class Game {
         player.score = 0
         player.drawing = []
         player.isDrawingSubmitted = false
-        player.isGuessSubmitted = false
+        player.isTitleSubmitted = false
         player.isPickSubmitted = false
       })
       this.syncPlayers()
@@ -138,7 +138,7 @@ class Game {
     })
   }
 
-  startGuessingPhase() {
+  startTitleingPhase() {
     if (!this.playerOrder) {
       this.playerOrder = Array(this.players.length).fill(0).map((e, i) => i)
       for (let i = this.playerOrder.length-1; i != 0; i--) {
@@ -151,7 +151,7 @@ class Game {
     this.phase = GamePhase.GUESSING
     this.currPlayerIndex = this.playerOrder[++this.turn]
     const currPlayer = this.players[this.currPlayerIndex]
-    currPlayer.isGuessSubmitted = true
+    currPlayer.isTitleSubmitted = true
     currPlayer.isPickSubmitted = true
     currPlayer.isCurrPlayer = true
     this.startCountdown(10)
@@ -165,11 +165,11 @@ class Game {
   startPickingPhase() {
     this.phase = GamePhase.PICKING
     this.startCountdown(5)
-    const guesses = this.players.map(p => ({
+    const titles = this.players.map(p => ({
       name: p.name,
-      text: p.isCurrPlayer ? p.prompt : p.guess
+      text: p.isCurrPlayer ? p.prompt : p.title
     }))
-    this.io.emit('player-sync', { phase: this.phase, guesses })
+    this.io.emit('player-sync', { phase: this.phase, titles })
     this.syncHost()
   }
 
@@ -187,10 +187,10 @@ class Game {
           pickedPlayer && (pickedPlayer.score += 500)
         }
       }
-      player.isGuessSubmitted = false
+      player.isTitleSubmitted = false
       player.isPickSubmitted = false
       player.isCurrPlayer = false
-      player.guess = ''
+      player.title = ''
       player.pick = ''
     })
     this.syncPlayers()
@@ -211,7 +211,7 @@ class Game {
         clearInterval(this.countdownTimer)
         switch(this.phase) {
           case GamePhase.DRAWING:
-            this.startGuessingPhase()
+            this.startTitleingPhase()
             break
           case GamePhase.GUESSING:
             this.startPickingPhase()
@@ -223,7 +223,7 @@ class Game {
             if (this.turn >= this.players.length-1)
               this.startEndLobbyPhase()
             else
-              this.startGuessingPhase()
+              this.startTitleingPhase()
             break
         }
       }

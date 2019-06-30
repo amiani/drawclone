@@ -4,7 +4,7 @@ import O from 'patchinko/constant.mjs'
 import GamePhase from '../GamePhaseClient'
 import HostLobby from './host-lobby'
 import HostDrawing from './host-drawing'
-import HostGuessing from './host-guessing'
+import HostTitling from './host-titling'
 import HostPicking from './host-picking'
 import HostScoreboard from './host-scoreboard'
 import HostEndLobby from './host-endlobby'
@@ -16,7 +16,7 @@ const store = {
 		phase: GamePhase.LOBBY,
 		players: [],
 		currPlayer: 0,
-		guesses: [],
+		titles: [],
 		picks: [],
 		countdown: 30,
 	}),
@@ -63,7 +63,7 @@ customElements.define('host-app', class HostApp extends LitElement {
 				${{
 					[GamePhase.LOBBY]: html`<host-lobby .state=${this.state} .actions=${actions}></host-lobby>`,
 					[GamePhase.DRAWING]: html`<host-drawing .state=${this.state} .actions=${actions}></host-drawing>`,
-					[GamePhase.GUESSING]: html`<host-guessing .state=${this.state} .actions=${actions}></host-guessing>`,
+					[GamePhase.TITLING]: html`<host-titling .state=${this.state} .actions=${actions}></host-titling>`,
 					[GamePhase.PICKING]: html`<host-picking .state=${this.state} .actions=${actions}></host-picking>`,
 					[GamePhase.SCOREBOARD]: html`<host-scoreboard .state=${this.state} .actions=${actions}></host-scoreboard>`,
 					[GamePhase.ENDLOBBY]: html`<host-endlobby .state=${this.state} .actions=${actions}></host-endlobby>`

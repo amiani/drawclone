@@ -4,7 +4,7 @@ import O from 'patchinko/constant.mjs'
 import GamePhase from '../GamePhaseClient'
 import PlayerLobby from './player-lobby'
 import PlayerDrawing from './player-drawing'
-import PlayerGuessing from './player-guessing'
+import PlayerTitling from './player-titling'
 import PlayerPicking from './player-picking'
 import PlayerEndLobby from './player-endlobby'
 
@@ -17,10 +17,10 @@ const store = {
 		score: 0,
 		prompt: '',
 		drawing: [],
-		guesses: [],
+		titles: [],
 		isCurrPlayer: false,
 		isDrawingSubmitted: false,
-		isGuessSubmitted: false,
+		isTitleSubmitted: false,
 		isPickSubmitted: false
 	}),
 	
@@ -44,8 +44,8 @@ const store = {
 			})
 		},
 
-		submitGuess: guess => {
-			socket.emit('submit-guess', guess, data => {
+		submitTitle: title => {
+			socket.emit('submit-title', title, data => {
 				if (data.error) console.error(data.error.msg)
 				else update(data)
 			})
@@ -104,7 +104,7 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 				${{
 					[GamePhase.LOBBY]: html`<player-lobby .state=${this.state} .actions=${actions}></player-lobby>`,
 					[GamePhase.DRAWING]: html`<player-drawing .state=${this.state} .actions=${actions}></player-drawing>`,
-					[GamePhase.GUESSING]: html`<player-guessing .state=${this.state} .actions=${actions}></player-guessing>`,
+					[GamePhase.TITLING]: html`<player-titling .state=${this.state} .actions=${actions}></player-titling>`,
 					[GamePhase.PICKING]: html`<player-picking .state=${this.state} .actions=${actions}></player-picking>`,
 					[GamePhase.SCOREBOARD]: html`<p>Player Scoreboard Phase</p>`,
 					[GamePhase.ENDLOBBY]: html`<player-endlobby .state=${this.state} .actions=${actions}></player-endlobby>`,

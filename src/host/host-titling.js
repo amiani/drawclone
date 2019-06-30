@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit-element'
 import { WiredCard } from 'wired-elements'
 import draw from '../draw'
 
-export default customElements.define('host-guessing', class HostGuessing extends LitElement {
+export default customElements.define('host-titling', class HostTitling extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
