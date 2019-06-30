@@ -34,7 +34,7 @@ export default customElements.define('player-picking', class PlayerPicking exten
       html`<p>Wait for everyone else</p>` :
       html`
         <ul id='pick-container'>
-          ${this.state.guesses.map(g => g.name === this.state.name ? 
+          ${this.state.titles.map(g => g.name === this.state.name ? 
             null :
             html`<li><wired-button @click=${e=>this.actions.submitPick(g.name)}>${g.text}</wired-button></li>`
           )}

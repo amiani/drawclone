@@ -7,11 +7,11 @@ module.exports = class Player {
     this.score = 0
     this.prompt = ''
     this.drawing = []
-    this.guess = ''
+    this.title = ''
     this.pick = ''
     this.isCurrPlayer = false
     this.isDrawingSubmitted = false
-    this.isGuessSubmitted = false
+    this.isTitleSubmitted = false
     this.isPickSubmitted = false
     console.log(`${name} joined`)
   }
@@ -24,11 +24,11 @@ module.exports = class Player {
       score: this.score,
       prompt: this.prompt,
       drawing: this.drawing,
-      guess: this.guess,
+      title: this.title,
       pick: this.pick,
       isCurrPlayer: this.isCurrPlayer,
       isDrawingSubmitted: this.isDrawingSubmitted,
-      isGuessSubmitted: this.isGuessSubmitted,
+      isTitleSubmitted: this.isTitleSubmitted,
       isPickSubmitted: this.isPickSubmitted
     }
   }

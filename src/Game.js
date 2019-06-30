@@ -148,7 +148,7 @@ class Game {
         this.playerOrder[j] = t
       }
     }
-    this.phase = GamePhase.GUESSING
+    this.phase = GamePhase.TITLING
     this.currPlayerIndex = this.playerOrder[++this.turn]
     const currPlayer = this.players[this.currPlayerIndex]
     currPlayer.isTitleSubmitted = true
@@ -214,7 +214,7 @@ class Game {
           case GamePhase.DRAWING:
             this.startTitlingPhase()
             break
-          case GamePhase.GUESSING:
+          case GamePhase.TITLING:
             this.startPickingPhase()
             break
           case GamePhase.PICKING:

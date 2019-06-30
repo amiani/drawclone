@@ -3,7 +3,7 @@ var urlsToCache = [
   '/src/player/player-app.js',
   '/src/player/player-lobby.js',
   '/src/player/player-drawing.js',
-  '/src/player/player-guessing.js',
+  '/src/player/player-titling.js',
   '/src/player/player-picking.js',
   '/src/player/player-endlobby.js',
 ];
