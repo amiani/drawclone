@@ -37,16 +37,17 @@ export default customElements.define('big-clock', class BigClock extends LitElem
 
   static get styles() {
     return css`
-      #clock-container {
-
+      :host {
+        display: block;
+      }
+      
+      #clock-canvas {
+        display: block;
       }
     `
   }
 
   render() {
-    return html`
-      <div id='clock-container'>
-        <canvas id='clock-canvas' width=${this.width} height=${this.height}></canvas>
-      </div>`
+    return html`<canvas id='clock-canvas' width=${this.width} height=${this.height}></canvas>`
   }
 })
