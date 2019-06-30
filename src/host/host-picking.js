@@ -23,7 +23,7 @@ export default customElements.define('host-picking', class HostPicking extends L
   render() {
     return html`
       <ul>
-        ${this.state.guesses.map(g => html`<li>${g}</li>`)}
+        ${this.state.titles.map(g => html`<li>${g}</li>`)}
       </ul>
       <p>${this.state.countdown}</p>`
   }

@@ -69,7 +69,7 @@ class Game {
         player.isDrawingSubmitted = true
         ack({ isDrawingSubmitted: true })
         if (this.players.reduce((acc, curr) => acc && curr.isDrawingSubmitted, true)) { //if all players have submitted drawings
-          this.startTitleingPhase()
+          this.startTitlingPhase()
         }
       } else {
         ack({ error: { msg: `already have drawing or got no drawing for player ${player.name}`}})
@@ -138,7 +138,7 @@ class Game {
     })
   }
 
-  startTitleingPhase() {
+  startTitlingPhase() {
     if (!this.playerOrder) {
       this.playerOrder = Array(this.players.length).fill(0).map((e, i) => i)
       for (let i = this.playerOrder.length-1; i != 0; i--) {
@@ -197,6 +197,7 @@ class Game {
     this.syncHost()
   }
 
+
   startEndLobbyPhase() {
     this.phase = GamePhase.ENDLOBBY
     this.syncPlayers()
@@ -211,7 +212,7 @@ class Game {
         clearInterval(this.countdownTimer)
         switch(this.phase) {
           case GamePhase.DRAWING:
-            this.startTitleingPhase()
+            this.startTitlingPhase()
             break
           case GamePhase.GUESSING:
             this.startPickingPhase()
@@ -223,7 +224,7 @@ class Game {
             if (this.turn >= this.players.length-1)
               this.startEndLobbyPhase()
             else
-              this.startTitleingPhase()
+              this.startTitlingPhase()
             break
         }
       }
