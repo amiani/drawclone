@@ -16,10 +16,13 @@ module.exports = io => {
 
     socket.on('host-join', (data, ack) => {
       if (game.host) {
+        game.host.socket = socket
         ack(game.host)
+        game.syncHost()
       } else {
         const host = game.addHost(socket)
         ack(host)
+        game.syncHost()
       }
     })
   })
