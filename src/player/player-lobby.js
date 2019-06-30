@@ -58,13 +58,13 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
               value=${this.name}
               .size=${this.wiredInputWidth}
               @change=${e => this.name = e.target.value}></wired-input>
-            <wired-button @click=${this.submit}>Submit</wired-button>
+            <wired-button elevation=1 @click=${this.submit}>Submit</wired-button>
           </div>` :
         html`
           <div id='lobby-wait-container'>
             <p>You are: ${this.state.name}</p>
             ${this.state.isLeader ? 
-              html`<wired-button @click=${this.actions.startGame}>Everybody's In!</wired-button>` :
+              html`<wired-button elevation=1 @click=${this.actions.startGame}>Everybody's In!</wired-button>` :
               html`<p>sit tight...</p>`}
           </div>`}
       </div>`

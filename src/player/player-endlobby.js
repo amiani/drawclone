@@ -27,8 +27,8 @@ export default customElements.define('player-endlobby', class PlayerEndLobby ext
     return this.state.isLeader ?
       html`
         <div id='button-container'>
-          <wired-button @click=${this.actions.restartGame}>New game; same players</wired-button>
-          <wired-button @click=${this.actions.newPlayers}>New game; new players</wired-button>
+          <wired-button elevation=1 @click=${this.actions.restartGame}>New game; same players</wired-button>
+          <wired-button elevation=1 @click=${this.actions.newPlayers}>New game; new players</wired-button>
         </div>` :
       html`<p>Hope you had fun :)</p>`
   }
