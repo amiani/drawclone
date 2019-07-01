@@ -9,6 +9,7 @@ module.exports = class Player {
     this.drawing = []
     this.title = ''
     this.pick = ''
+    this.pickers = []
     this.isCurrPlayer = false
     this.isDrawingSubmitted = false
     this.isTitleSubmitted = false
@@ -26,6 +27,7 @@ module.exports = class Player {
       drawing: this.drawing,
       title: this.title,
       pick: this.pick,
+      pickers: this.pickers,
       isCurrPlayer: this.isCurrPlayer,
       isDrawingSubmitted: this.isDrawingSubmitted,
       isTitleSubmitted: this.isTitleSubmitted,
