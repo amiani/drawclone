@@ -34,8 +34,8 @@ export default class ScoreAnimation {
       }
       this.timeline.add({
         targets: pickerCircle,
-        x: screenWidth/2 + 600*Math.cos((Math.PI/4)*(i + 4)),
-        y: screenHeight/2 + 600*Math.sin((Math.PI/4)*(i + 4)),
+        x: screenWidth/2 + 500*Math.cos((Math.PI/4)*(i + 4)),
+        y: screenHeight/2 + 500*Math.sin((Math.PI/4)*(i + 4)),
         begin: anim => {
           this.audio.play()
           pickerCircle.isVisible = true
