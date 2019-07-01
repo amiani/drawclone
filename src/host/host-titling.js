@@ -34,7 +34,7 @@ export default customElements.define('host-titling', class HostTitling extends L
   render() {
     return html`
       <wired-card id='#card' elevation=5>
-        <canvas id='drawing' width=${window.innerWidth*.8} height=${window.innerHeight*.8}></canvas>
+        <canvas id='drawing' width=${this.state.screenWidth*.8} height=${this.state.screenHeight*.8}></canvas>
       </wired-card>
       <p>${this.state.countdown}</p>`
   }

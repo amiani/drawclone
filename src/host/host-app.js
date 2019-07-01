@@ -19,17 +19,21 @@ const store = {
 		titles: [],
 		picks: [],
 		countdown: 30,
+		screenWidth: 100,
+		screenHeight: 100,
 	}),
 
 	Actions: update => ({
 		sync: data => update(data),
-		addPlayer: data => update(data)
+		addPlayer: data => update(data),
+		resize: (screenWidth, screenHeight) => update({ screenWidth, screenHeight })
 	})
 }
 
 const update = flyd.stream()
 const states = flyd.scan(O, store.Initial(), update)
 const actions = store.Actions(update, socket)
+meiosisTracer({ streams: [states] })
 
 customElements.define('host-app', class HostApp extends LitElement {
 	static get properties() {
@@ -47,7 +51,15 @@ customElements.define('host-app', class HostApp extends LitElement {
 
 		socket.emit('host-join', 'host', actions.sync)
 		socket.on('host-sync', actions.sync)
+		window.addEventListener('resize', this.handleResize)
+		actions.resize(window.innerWidth, window.innerHeight)
 	}
+
+	disconnectedCallback() {
+		window.removeEventListener('resize', this.handleResize)
+	}
+
+	handleResize(e) { actions.resize(window.innerWidth, window.innerHeight) }
 
 	static get styles() {
 		return css`
@@ -67,7 +79,7 @@ customElements.define('host-app', class HostApp extends LitElement {
 					[GamePhase.PICKING]: html`<host-picking .state=${this.state} .actions=${actions}></host-picking>`,
 					[GamePhase.SCOREBOARD]: html`<host-scoreboard .state=${this.state} .actions=${actions}></host-scoreboard>`,
 					[GamePhase.ENDLOBBY]: html`<host-endlobby .state=${this.state} .actions=${actions}></host-endlobby>`
-				}[this.state.phase]}
+				}[4]}
 			</div>
 		`
 	}
