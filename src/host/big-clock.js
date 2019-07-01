@@ -21,7 +21,7 @@ export default customElements.define('big-clock', class BigClock extends LitElem
   firstUpdated() {
     this.canvas = this.shadowRoot.querySelector('#clock-canvas')
     this.ctx = this.canvas.getContext('2d')
-    this.roughClock = rough.canvas(this.canvas)
+    this.rc = rough.canvas(this.canvas)
   }
 
   updated() {
@@ -29,7 +29,7 @@ export default customElements.define('big-clock', class BigClock extends LitElem
     this.clockHeight = this.clockWidth
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     if (this.state.countdown > 0)
-      this.roughClock.arc(this.width/2, this.height/2, this.clockWidth, this.clockHeight, (3/2)*Math.PI + (2*Math.PI/30)*(30-this.state.countdown), 2*Math.PI+(3/2)*Math.PI, true, {
+      this.rc.arc(this.width/2, this.height/2, this.clockWidth, this.clockHeight, (3/2)*Math.PI + (2*Math.PI/30)*(30-this.state.countdown), 2*Math.PI+(3/2)*Math.PI, true, {
         stroke: 'black', strokeWidth: 9,
         fill: '#ee855e'
       })
