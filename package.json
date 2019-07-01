@@ -13,6 +13,7 @@
     "build": "rimraf dist && rollup -c rollup.config.js"
   },
   "dependencies": {
+    "animejs": "^3.0.1",
     "flyd": "^0.2.8",
     "lit-element": "^2.0.1",
     "lit-html": "^1.0.0",
