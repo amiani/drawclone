@@ -792,14 +792,23 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     this.scoreAnimations = this.state.players
       .filter(p => (p.pickers.length > 0 && !p.isCurrPlayer))
       .map(p => new ScoreAnimation(
-        p.title, 
-        p.pickers, 
+        p,
         this.rc.generator, 
         this.state.screenWidth, 
         this.state.screenHeight, 
         this.audio, 
         '/audio/pipe_flute_dry.wav',
         ()=>this.onAnimComplete()))
+    
+    const currPlayer = this.state.players.find(p => p.isCurrPlayer)
+    this.scoreAnimations.push(new ScoreAnimation(
+      currPlayer,
+      this.rc.generator,
+      this.state.screenWidth,
+      this.state.screenHeight,
+      this.audio,
+      '/audio/pipe_flute_dry.wav',
+      ()=>this.onAnimComplete()))
     this.activeAnim = this.scoreAnimations[0]
     this.activeAnim.play()
     this.draw()

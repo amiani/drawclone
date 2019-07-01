@@ -1,9 +1,9 @@
 import anime from 'animejs'
 
 export default class ScoreAnimation {
-  constructor(title, pickers, generator, screenWidth, screenHeight, audio, audioSrc, onComplete) {
-    this.title = title
-    this.pickers = pickers
+  constructor(player, generator, screenWidth, screenHeight, audio, audioSrc, onComplete) {
+    this.player = player
+    this.isAuthorVisible = false
     this.generator = generator
     this.screenWidth = screenWidth
     this.screenHeight = screenHeight
@@ -14,28 +14,39 @@ export default class ScoreAnimation {
       complete: onComplete
     })
 
-    this.ellipse = { x: -100, y: screenHeight/2 }
-    this.ellipse.shape = generator.ellipse(0, 0, this.screenWidth/3, this.screenHeight*.3, {
-      roughness: .15,
-      strokeWidth: 3,
+    this.setupEllipse()
+    this.setupCircles()
+    this.setupReveal()
+    this.timeline.add({
+      duration: 500
+    })
+  }
+
+  setupEllipse() {
+    this.ellipse = { x: -100, y: this.screenHeight/2 }
+    this.ellipse.shape = this.generator.ellipse(0, 0, this.screenWidth/3, this.screenHeight*.3, {
+      roughness: 1.5,
+      strokeWidth: 9,
     })
     this.timeline.add({
       targets: this.ellipse,
-      x: screenWidth/2,
+      x: this.screenWidth/2,
       duration: 3000,
     })
+  }
 
-    this.pickerCircles = pickers.map((picker, i) => {
+  setupCircles() {
+    this.pickerCircles = this.player.pickers.map((picker, i) => {
       const pickerCircle = {
         name: picker,
-        x: screenWidth/2,
-        y: screenHeight/2,
+        x: this.screenWidth/2,
+        y: this.screenHeight/2,
         isVisible: false
       }
       this.timeline.add({
         targets: pickerCircle,
-        x: screenWidth/2 + 500*Math.cos((Math.PI/4)*(i + 4)),
-        y: screenHeight/2 + 500*Math.sin((Math.PI/4)*(i + 4)),
+        x: this.screenWidth/2 + 500*Math.cos((Math.PI/4)*(i + 4)),
+        y: this.screenHeight/2 + 500*Math.sin((Math.PI/4)*(i + 4)),
         begin: anim => {
           this.audio.play()
           pickerCircle.isVisible = true
@@ -43,6 +54,12 @@ export default class ScoreAnimation {
       })
       return pickerCircle
     })
+  }
+
+  setupReveal() {
+    this.timeline.add({
+      begin: anim => this.isAuthorVisible = true
+    }, '+=500')
   }
 
   play() {
@@ -56,10 +73,12 @@ export default class ScoreAnimation {
       if (pc.isVisible) {
         rc.circle(pc.x, pc.y, 170)
         ctx.font = '40px "Gloria Hallelujah"'
-        ctx.textBaseline = 'bottom'
+        ctx.textBaseline = this.isAuthorVisible && this.player.isCurrPlayer ? 'bottom' : 'middle'
         ctx.strokeText(pc.name, pc.x, pc.y)
-        ctx.textBaseline = 'top'
-        ctx.strokeText(1000, pc.x, pc.y)
+        if (this.isAuthorVisible && this.player.isCurrPlayer) {
+          ctx.textBaseline = 'top'
+          ctx.strokeText(1000, pc.x, pc.y)
+        }
       }
     })
 
@@ -72,8 +91,17 @@ export default class ScoreAnimation {
 
     ctx.font = '100px "Gloria Hallelujah"'
     ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.strokeText(this.title, 0, 0)
+    ctx.textBaseline = this.isAuthorVisible ? 'bottom' : 'middle'
+    ctx.strokeText(this.player.title ? this.player.title : this.player.prompt, 0, 0)
+
+    if (this.isAuthorVisible) {
+      ctx.textBaseline = 'top'
+      ctx.font = '80px "Gloria Hallelujah"'
+      const message = this.player.isCurrPlayer ?
+        'actual title!' :
+        `${this.player.name}'s answer`
+      ctx.strokeText(message, 0, 0)
+    }
     ctx.setTransform(1, 0, 0, 1, 0, 0)
   }
 }
