@@ -1,18 +1,6 @@
 import { LitElement, html, css } from 'lit-element'
-import anime from 'animejs'
 import rough from 'roughjs'
-
-class Drawable {
-  constructor() {
-    this.x = 0
-    this.y = 0
-  }
-
-  draw(ctx) {
-    ctx.translate(this.x, this.y)
-    ctx.setTransform(1, 0, 0, 1, 0, 0)
-  }
-}
+import ScoreAnimation from './ScoreAnimation'
 
 export default customElements.define('host-scoreboard', class HostScoreboard extends LitElement {
   static get properties() {
@@ -25,11 +13,7 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     super()
     this.state = {}
     this.actions = {}
-    this.ellipse = { x: -100, y: 500 }
-    this.pickerCircles = []
-    this.timeline = anime.timeline({
-      autoplay: false,
-    })
+    this.pickedPlayerIndex = 0
   }
 
   firstUpdated() {
@@ -218,6 +202,7 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
               "pick": "bbb",
               "pickers": [
                   "ccc",
+                  "amiani"
               ],
               "isCurrPlayer": false,
               "isDrawingSubmitted": true,
@@ -803,78 +788,18 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     }
     this.ctx = this.shadowRoot.querySelector('#score-canvas').getContext('2d')
     this.rc = rough.canvas(this.ctx.canvas)
-    this.ellipse.x = -100
-    this.ellipse.y = this.state.screenHeight/2
-    this.ellipse.shape = this.rc.generator.ellipse(0, 0, this.state.screenWidth/3, this.state.screenHeight*.3, {
-      roughness: .15,
-      strokeWidth: 3,
-    })
-    this.pickedPlayers = this.state.players
-      .filter(p => (p.pickers.length > 0 && !p.isCurrPlayer))
-    this.setupAnimation(this.pickedPlayers[0])
-    this.timeline.play()
-    this.draw()
     this.audio = new Audio()
-  }
-
-  setupAnimation(player) {
-    if (player) {
-      //ellipse comes in from side
-      this.ellipse.x = -100
-      this.timeline.add({
-        targets: this.ellipse,
-        x: this.state.screenWidth/2,
-        duration: 3000,
-      })
-      //picker circles come from behind
-      this.pickerCircles = player.pickers.map((picker, i) => {
-        const pickerCircle = {
-          name: picker,
-          x: this.state.screenWidth/2,
-          y: this.state.screenHeight/2,
-          isVisible: false
-        }
-        this.timeline.add({
-          targets: pickerCircle,
-          x: this.state.screenWidth/2 + 600*Math.cos((Math.PI/4)*(i + 4)),
-          y: this.state.screenHeight/2 + 600*Math.sin((Math.PI/4)*(i + 4)),
-          begin: anim => {
-            this.audio.src = '/audio/pipe_flute_dry.wav'
-            this.audio.play()
-            pickerCircle.isVisible = true
-          }
-        })
-        return pickerCircle
-      })
-    }
+    this.scoreAnimations = this.state.players
+      .filter(p => (p.pickers.length > 0 && !p.isCurrPlayer))
+      .map(p => new ScoreAnimation(p.title, p.pickers, this.rc.generator, this.state.screenWidth, this.state.screenHeight, this.audio, '/audio/pipe_flute_dry.wav'))
+    this.draw()
+    this.scoreAnimations[0].play()
   }
 
   draw() {
     const request = window.requestAnimationFrame(()=>this.draw())
     this.ctx.clearRect(0, 0, this.state.screenWidth, this.state.screenHeight)
-    this.ctx.textAlign = 'center'
-    this.ctx.textBaseline = 'middle'
-
-    this.pickerCircles.forEach(pc => {
-      if (pc.isVisible) {
-        this.rc.circle(pc.x, pc.y, 200)
-        this.ctx.font = '40px "Gloria Hallelujah"'
-        this.ctx.strokeText(pc.name, pc.x, pc.y)
-      }
-    })
-
-    this.ctx.translate(this.ellipse.x, this.ellipse.y)
-    this.ctx.beginPath()
-    this.ctx.ellipse(0 ,0, this.state.screenWidth*.4/2, this.state.screenHeight*.3/2, 0, 0, 2*Math.PI)
-    this.ctx.fillStyle = 'white'
-    this.ctx.fill()
-    this.rc.draw(this.ellipse.shape)
-    this.ctx.setTransform(1, 0, 0, 1, 0, 0)
-
-    this.ctx.font = '100px "Gloria Hallelujah"'
-    this.ctx.textAlign = 'center'
-    this.ctx.textBaseline = 'middle'
-    this.ctx.strokeText(this.pickedPlayers[0].title, this.ellipse.x, this.state.screenHeight/2)
+    this.scoreAnimations[0].draw(this.ctx, this.rc)
   }
 
   static get styles() {
