@@ -89,7 +89,7 @@ export default class ScoreAnimation {
     ctx.fill()
     rc.draw(this.ellipse.shape)
 
-    ctx.font = '100px "Gloria Hallelujah"'
+    ctx.font = '80px "Gloria Hallelujah"'
     ctx.textAlign = 'center'
     ctx.textBaseline = this.isAuthorVisible ? 'bottom' : 'middle'
     ctx.strokeText(this.player.title ? this.player.title : this.player.prompt, 0, 0)
@@ -101,6 +101,10 @@ export default class ScoreAnimation {
         'actual title!' :
         `${this.player.name}'s answer`
       ctx.strokeText(message, 0, 0)
+
+      ctx.textBaseline = 'middle'
+      const points = this.player.pickers.length * (this.player.isCurrPlayer ? 1000 : 500)
+      ctx.strokeText(`${points} points!`, 0, 250)
     }
     ctx.setTransform(1, 0, 0, 1, 0, 0)
   }
