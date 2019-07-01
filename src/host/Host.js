@@ -10,7 +10,6 @@ module.exports = class Host {
 
   toJSON() {
     return {
-      players: this.players,
       phase: this.phase,
     }
   }
