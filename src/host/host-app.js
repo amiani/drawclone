@@ -24,7 +24,8 @@ const store = {
 	}),
 
 	Actions: update => ({
-		sync: data => update(data),
+    sync: data => update(data),
+    endScoreboard: () => socket.emit('end-scoreboard'),
 		resize: (screenWidth, screenHeight) => update({ screenWidth, screenHeight })
 	})
 }

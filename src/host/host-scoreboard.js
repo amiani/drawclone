@@ -806,14 +806,13 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
   }
 
   onAnimComplete() {
-    console.log('anim Complete')
     if (this.animIndex < this.scoreAnimations.length-1) {
       this.animIndex++
       this.activeAnim = this.scoreAnimations[this.animIndex]
       this.activeAnim.play()
     }
     else {
-      console.log('all done')
+      this.actions.endScoreboard()
     }
   }
 
