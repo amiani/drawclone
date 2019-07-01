@@ -13,7 +13,7 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     super()
     this.state = {}
     this.actions = {}
-    this.pickedPlayerIndex = 0
+    this.animIndex = 0
   }
 
   firstUpdated() {
@@ -767,7 +767,7 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
               ],
               "title": "bar",
               "pick": "aaa",
-              "pickers": [],
+              "pickers": ['test1', 'test2'],
               "isCurrPlayer": false,
               "isDrawingSubmitted": true,
               "isTitleSubmitted": true,
@@ -791,15 +791,36 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     this.audio = new Audio()
     this.scoreAnimations = this.state.players
       .filter(p => (p.pickers.length > 0 && !p.isCurrPlayer))
-      .map(p => new ScoreAnimation(p.title, p.pickers, this.rc.generator, this.state.screenWidth, this.state.screenHeight, this.audio, '/audio/pipe_flute_dry.wav'))
+      .map(p => new ScoreAnimation(
+        p.title, 
+        p.pickers, 
+        this.rc.generator, 
+        this.state.screenWidth, 
+        this.state.screenHeight, 
+        this.audio, 
+        '/audio/pipe_flute_dry.wav',
+        ()=>this.onAnimComplete()))
+    this.activeAnim = this.scoreAnimations[0]
+    this.activeAnim.play()
     this.draw()
-    this.scoreAnimations[0].play()
+  }
+
+  onAnimComplete() {
+    console.log('anim Complete')
+    if (this.animIndex < this.scoreAnimations.length-1) {
+      this.animIndex++
+      this.activeAnim = this.scoreAnimations[this.animIndex]
+      this.activeAnim.play()
+    }
+    else {
+      console.log('all done')
+    }
   }
 
   draw() {
     const request = window.requestAnimationFrame(()=>this.draw())
     this.ctx.clearRect(0, 0, this.state.screenWidth, this.state.screenHeight)
-    this.scoreAnimations[0].draw(this.ctx, this.rc)
+    this.activeAnim.draw(this.ctx, this.rc)
   }
 
   static get styles() {

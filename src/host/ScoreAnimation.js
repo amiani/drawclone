@@ -1,7 +1,7 @@
 import anime from 'animejs'
 
 export default class ScoreAnimation {
-  constructor(title, pickers, generator, screenWidth, screenHeight, audio, audioSrc) {
+  constructor(title, pickers, generator, screenWidth, screenHeight, audio, audioSrc, onComplete) {
     this.title = title
     this.pickers = pickers
     this.generator = generator
@@ -11,7 +11,7 @@ export default class ScoreAnimation {
     this.audio.src = audioSrc
     this.timeline = anime.timeline({
       autoplay: false,
-      complete: timeline => {},
+      complete: onComplete
     })
 
     this.ellipse = { x: -100, y: screenHeight/2 }
