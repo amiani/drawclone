@@ -19,13 +19,12 @@ const store = {
 		titles: [],
 		picks: [],
 		countdown: 30,
-		screenWidth: 100,
-		screenHeight: 100,
+		screenWidth: window.innerWidth,
+		screenHeight: window.innerHeight,
 	}),
 
 	Actions: update => ({
 		sync: data => update(data),
-		addPlayer: data => update(data),
 		resize: (screenWidth, screenHeight) => update({ screenWidth, screenHeight })
 	})
 }
