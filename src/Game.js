@@ -42,7 +42,7 @@ class Game {
       phase: this.phase,
       players: this.players,
       countdown: this.countdown,
-      currPlayer: this.currPlayerIndex,
+      currPlayerIndex: this.currPlayerIndex,
       titles: this.players.map(p => p.isCurrPlayer ? p.prompt : p.title)
     })
   }
@@ -176,6 +176,17 @@ class Game {
   startScoreboardPhase() {
     this.phase = GamePhase.SCOREBOARD
     this.startCountdown(10)
+    this.players.forEach(picker => {
+      if (picker.pick) {
+        const pickedPlayer = this.players.find(p => p.name === picker.pick)
+        pickedPlayer.pickers.push(picker.name)
+      }
+    })
+    this.syncPlayers()
+    this.syncHost()
+  }
+
+  endScoreboardPhase() {
     const currPlayer = this.players[this.currPlayerIndex]
     this.players.forEach(player => {
       if (player !== currPlayer) {
@@ -192,6 +203,7 @@ class Game {
       player.isCurrPlayer = false
       player.title = ''
       player.pick = ''
+      player.pickers = []
     })
     this.syncPlayers()
     this.syncHost()
