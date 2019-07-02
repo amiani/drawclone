@@ -58,7 +58,7 @@ class Game {
   registerPlayerListeners(player) {
     const { socket } = player
     socket.on('start-game', () => {
-      if (this.phase === 0 && this.host) {
+      if (this.phase === 0 && this.host && this.players.length > 2) {
         this.startDrawingPhase()
       }
     })
