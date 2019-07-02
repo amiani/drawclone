@@ -16,6 +16,11 @@ export default customElements.define('player-picking', class PlayerPicking exten
 
   static get styles() {
     return css`
+      :host {
+        display: flex;
+        justify-content: center;
+      }
+
       #pick-container {
         list-style: none;
       }

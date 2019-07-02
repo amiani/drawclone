@@ -95,7 +95,11 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
-			}
+      }
+      
+      p { 
+        text-align: center;
+      }
 		`
 	}
 	render() {
@@ -106,7 +110,7 @@ customElements.define('player-app', class PlayerApp extends LitElement {
 					[GamePhase.DRAWING]: html`<player-drawing .state=${this.state} .actions=${actions}></player-drawing>`,
 					[GamePhase.TITLING]: html`<player-titling .state=${this.state} .actions=${actions}></player-titling>`,
 					[GamePhase.PICKING]: html`<player-picking .state=${this.state} .actions=${actions}></player-picking>`,
-					[GamePhase.SCOREBOARD]: html`<p>Player Scoreboard Phase</p>`,
+					[GamePhase.SCOREBOARD]: html`<p>check out those scores!</p>`,
 					[GamePhase.ENDLOBBY]: html`<player-endlobby .state=${this.state} .actions=${actions}></player-endlobby>`,
 				}[this.state.phase]}
 			</div>

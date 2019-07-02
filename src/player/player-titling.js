@@ -22,6 +22,11 @@ export default customElements.define('player-titling', class PlayerTitling exten
 
   static get styles() {
     return css`
+      :host {
+        display: flex;
+        justify-content: center;
+      }
+
       p {
         text-align: center;
       }

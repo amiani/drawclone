@@ -16,10 +16,16 @@ export default customElements.define('player-endlobby', class PlayerEndLobby ext
 
   static get styles() {
     return css`
+      :host {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
       #button-container {
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: space-between;
       }
     `
   }
