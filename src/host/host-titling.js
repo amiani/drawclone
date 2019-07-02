@@ -42,6 +42,6 @@ export default customElements.define('host-titling', class HostTitling extends L
       <wired-card id='#card' elevation=5>
         <canvas id='drawing' width=${this.state.screenHeight*.8/drawingRatio} height=${this.state.screenHeight*.8}></canvas>
       </wired-card>
-      <big-clock time=${this.state.countdown} height=${100}></big-clock>`
+      <big-clock time=${this.state.countdown} height=${this.state.screenWidth*.4}></big-clock>`
   }
 })
