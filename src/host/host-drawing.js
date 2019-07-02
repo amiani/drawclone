@@ -24,6 +24,6 @@ export default customElements.define('host-drawing', class HostDrawing extends L
     const length = this.state.screenWidth < this.state.screenHeight ?
       this.state.screenWidth :
       this.state.screenHeight
-    return html`<big-clock .state=${this.state} .actions=${this.actions} width=${length} height=${length}></big-clock>`
+    return html`<big-clock time=${this.state.countdown} height=${length}></big-clock>`
   }
 })

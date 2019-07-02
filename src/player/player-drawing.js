@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit-element'
 import { WiredButton, WiredCard } from 'wired-elements'
-
+import { drawingRatio } from '../constants'
 import DrawCanvas from './draw-canvas'
 
 export default customElements.define('player-drawing', class PlayerDrawing extends LitElement {
@@ -46,8 +46,8 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
               <draw-canvas
                 .state=${this.state}
                 .actions=${this.actions}
-                width=${window.innerWidth*.8}
-                height=${window.innerHeight*.75}></draw-canvas>
+                width=${window.innerWidth*.9}
+                height=${window.innerWidth*.9*drawingRatio}></draw-canvas>
             </wired-card>
             <wired-button elevation=2 @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Submit</wired-button>`}
       </div>`

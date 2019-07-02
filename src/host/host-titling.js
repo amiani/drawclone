@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit-element'
 import { WiredCard } from 'wired-elements'
 import draw from '../draw'
+import BigClock from './big-clock'
+import { drawingRatio } from '../constants'
 
 export default customElements.define('host-titling', class HostTitling extends LitElement {
   static get properties() {
@@ -26,6 +28,10 @@ export default customElements.define('host-titling', class HostTitling extends L
 
   static get styles() {
     return css`
+      :host {
+        display: flex;
+        justify-content: center;
+      }
       #card {
         border: solid black 2px;
       }
@@ -34,8 +40,8 @@ export default customElements.define('host-titling', class HostTitling extends L
   render() {
     return html`
       <wired-card id='#card' elevation=5>
-        <canvas id='drawing' width=${this.state.screenWidth*.8} height=${this.state.screenHeight*.8}></canvas>
+        <canvas id='drawing' width=${this.state.screenHeight*.8/drawingRatio} height=${this.state.screenHeight*.8}></canvas>
       </wired-card>
-      <p>${this.state.countdown}</p>`
+      <big-clock time=${this.state.countdown} height=${100}></big-clock>`
   }
 })

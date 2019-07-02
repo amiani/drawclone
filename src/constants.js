@@ -1,0 +1,1 @@
+export const drawingRatio = 1.6

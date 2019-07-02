@@ -4,17 +4,13 @@ import rough from 'roughjs'
 export default customElements.define('big-clock', class BigClock extends LitElement {
   static get properties() {
     return {
-      state: { type: Object },
-      actions: { type: Object },
-      width: { type: Number },
-      height: { type: Number }
+      time: { type: Number },
+      height: { type: Number },
     }
   }
   constructor() {
     super()
-    this.state = {}
-    this.actions = {}
-    this.width = 100
+    this.time = 30
     this.height = 100
   }
 
@@ -25,11 +21,11 @@ export default customElements.define('big-clock', class BigClock extends LitElem
   }
 
   updated() {
-    this.clockWidth = this.width*.9
-    this.clockHeight = this.clockWidth
+    this.clockHeight = this.height*.9
+    this.clockWidth = this.clockHeight
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-    if (this.state.countdown > 0)
-      this.rc.arc(this.width/2, this.height/2, this.clockWidth, this.clockHeight, (3/2)*Math.PI + (2*Math.PI/30)*(30-this.state.countdown), 2*Math.PI+(3/2)*Math.PI, true, {
+    if (this.time > 0)
+      this.rc.arc(this.height/2, this.height/2, this.clockWidth, this.clockHeight, (3/2)*Math.PI + (2*Math.PI/30)*(30-this.time), 2*Math.PI+(3/2)*Math.PI, true, {
         stroke: 'black', strokeWidth: 9,
         fill: '#ee855e'
       })
@@ -48,6 +44,6 @@ export default customElements.define('big-clock', class BigClock extends LitElem
   }
 
   render() {
-    return html`<canvas id='clock-canvas' width=${this.width} height=${this.height}></canvas>`
+    return html`<canvas id='clock-canvas' width=${this.height} height=${this.height}></canvas>`
   }
 })
