@@ -15,6 +15,11 @@ export default customElements.define('player-titling', class PlayerTitling exten
     this.title = ''
   }
 
+  handleKeydown(e) {
+    if (e.key === 'Enter')
+      this.actions.submitTitle(this.title)
+  }
+
   static get styles() {
     return css`
       p {
@@ -33,6 +38,7 @@ export default customElements.define('player-titling', class PlayerTitling exten
           type='text'
           placeholder='What is that...?'
           .value=${this.title}
+          @keydown=${this.handleKeyDown}
           @change=${e => this.title = e.target.value}></wired-input>
         <wired-button @click=${e=>this.actions.submitTitle(this.title)}>Submit</wired-button>
       </div>`

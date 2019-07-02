@@ -36,6 +36,11 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
     this.wiredInputWidth = this.shadowRoot.querySelector('wired-input').getBoundingClientRect().width
   }
 
+  handleKeydown(e) {
+    if (e.key === 'Enter')
+      this.submit()
+  }
+
   static get styles() {
     return css`
       .input-button-container {
@@ -63,7 +68,8 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
               placeholder="Enter name..."
               value=${this.name}
               .size=${this.wiredInputWidth}
-              @change=${e => this.name = e.target.value}></wired-input>
+              @change=${e => this.name = e.target.value}
+              @keydown=${this.handleKeydown}></wired-input>
             <wired-button elevation=1 @click=${this.submit}>Submit</wired-button>
           </div>` :
         html`
