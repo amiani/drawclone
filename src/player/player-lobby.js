@@ -20,6 +20,7 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
   }
 
   submit() {
+    console.log(this.name)
     this.actions.submitName(this.name)
   }
 
@@ -37,15 +38,17 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
   }
 
   handleKeydown(e) {
-    if (e.key === 'Enter')
+    if (e.key === 'Enter') {
+      e.preventDefault()
       this.submit()
+    }
   }
 
   static get styles() {
     return css`
       .input-button-container {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         margin: 5px;
       }
       wired-input {
@@ -70,13 +73,13 @@ export default customElements.define('player-lobby', class PlayerLobby extends L
               .size=${this.wiredInputWidth}
               @change=${e => this.name = e.target.value}
               @keydown=${this.handleKeydown}></wired-input>
-            <wired-button elevation=1 @click=${this.submit}>Submit</wired-button>
+            <wired-button elevation=2 @click=${this.submit}>Submit</wired-button>
           </div>` :
         html`
           <div id='lobby-wait-container'>
             <p>You are: ${this.state.name}</p>
             ${this.state.isLeader ? 
-              html`<wired-button elevation=1 @click=${this.actions.startGame}>Everybody's In!</wired-button>` :
+              html`<wired-button elevation=2 @click=${this.actions.startGame}>Everybody's In!</wired-button>` :
               html`<p>sit tight...</p>`}
           </div>`}
       </div>`
