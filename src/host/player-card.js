@@ -25,28 +25,42 @@ export default customElements.define('player-card', class PlayerCard extends Lit
   static get styles() {
     return css`
       #card-container {
+        display: block;
+      }
+
+      #card-inner {
         display: flex;
-        justify-content: space-around;
-        text-baseline: middle;
+        justify-content: center;
         padding: 10px;
       }
 
       #player-name {
-        display: inline-block;
+        display: block;
         font-size: 1.8rem;
+        margin-right: 50px;
+      }
+
+      #player-name > span {
+        vertical-align: middle;
       }
 
       #player-score {
-        display: inline-block;
+        display: block;
         font-size: 1.4rem;
+      }
+      
+      #player-score > span {
+        vertical-align: middle;
       }
     `
   }
   render() {
     return html`
       <wired-card id='card-container' elevation=${this.elevation}>
-        <div id='player-name'>${this.name}</div>
-        ${this.score >= 0 ? html`<div id='player-score'>${this.score}</div>` : null}
+        <div id='card-inner'>
+          <div id='player-name'><span>${this.name}</span></div>
+          ${this.score >= 0 ? html`<div id='player-score'><span>${this.score}</span></div>` : null}
+        </div>
       </wired-card>`
   }
 })
