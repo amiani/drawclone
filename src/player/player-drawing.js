@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element'
-import { WiredButton } from 'wired-elements'
+import { WiredButton, WiredCard } from 'wired-elements'
 
 import DrawCanvas from './draw-canvas'
 
@@ -23,25 +23,33 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
         flex-direction: column;
         align-items: center;
       }
-
-      p {
+      
+      #prompt {
         text-align: center;
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+      }
+
+      wired-card {
+        margin-bottom: 5px;
       }
     `
   }
   render() {
-    return this.state.isDrawingSubmitted ?
-      html`<p>Wait everyone else to finish</p>`:
-      html`<div id='draw-container'>
-        <p>${this.state.prompt}</p>
-        <wired-card elevation=5>
-          <draw-canvas
-            .state=${this.state}
-            .actions=${this.actions}
-            width=${window.innerWidth*.8}
-            height=${window.innerHeight*.75}></draw-canvas>
-        </wired-card>
-        <wired-button @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Submit</wired-button>
+    return html`
+      <div id='draw-container'>
+        ${this.state.isDrawingSubmitted ?
+          html`<p>Wait everyone else to finish</p>`:
+          html`
+            <div id='prompt'>${this.state.prompt}</div>
+            <wired-card elevation=5>
+              <draw-canvas
+                .state=${this.state}
+                .actions=${this.actions}
+                width=${window.innerWidth*.8}
+                height=${window.innerHeight*.75}></draw-canvas>
+            </wired-card>
+            <wired-button elevation=2 @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Submit</wired-button>`}
       </div>`
   }
 })
