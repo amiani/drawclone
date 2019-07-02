@@ -21,7 +21,7 @@ export default customElements.define('host-titling', class HostTitling extends L
   }
 
   updated() {
-    draw(this.ctx, this.state.players[this.state.currPlayer].drawing)
+    draw(this.ctx, this.state.players[this.state.currPlayerIndex].drawing)
   }
 
   static get styles() {

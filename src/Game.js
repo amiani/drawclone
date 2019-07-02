@@ -12,7 +12,7 @@ class Game {
     this.players = []
     this.playerOrder = false
     this.turn = -1
-    this.currPlayerIndex = 0
+    this.currPlayerIndex = -1
     this.prompts = ['blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones'],
     this.countdown = 30
     this.countdownTimer
@@ -112,6 +112,7 @@ class Game {
         player.isTitleSubmitted = false
         player.isPickSubmitted = false
       })
+      this.countdown = 30
       this.syncPlayers()
       this.startDrawingPhase()
     })
@@ -123,6 +124,7 @@ class Game {
   }
 
   startDrawingPhase() {
+    clearInterval(this.countdownTimer)
     this.phase = GamePhase.DRAWING
     this.syncHost()
     this.startCountdown(30)
@@ -139,6 +141,7 @@ class Game {
   }
 
   startTitlingPhase() {
+    clearInterval(this.countdownTimer)
     if (!this.playerOrder) {
       this.playerOrder = Array(this.players.length).fill(0).map((e, i) => i)
       for (let i = this.playerOrder.length-1; i != 0; i--) {
@@ -163,6 +166,7 @@ class Game {
   }
 
   startPickingPhase() {
+    clearInterval(this.countdownTimer)
     this.phase = GamePhase.PICKING
     this.startCountdown(5)
     const titles = this.players.map(p => ({
@@ -174,6 +178,7 @@ class Game {
   }
 
   startScoreboardPhase() {
+    clearInterval(this.countdownTimer)
     this.phase = GamePhase.SCOREBOARD
     const currPlayer = this.players[this.currPlayerIndex]
     this.players.forEach(picker => {
@@ -213,6 +218,7 @@ class Game {
 
 
   startEndLobbyPhase() {
+    clearInterval(this.countdownTimer)
     this.phase = GamePhase.ENDLOBBY
     this.syncPlayers()
     this.syncHost()
