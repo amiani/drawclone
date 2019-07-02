@@ -173,7 +173,7 @@ class Game {
       name: p.name,
       text: p.isCurrPlayer ? p.prompt : p.title
     }))
-    this.io.emit('player-sync', { phase: this.phase, titles })
+    this.players.forEach(p => p.socket.emit('player-sync', { phase: this.phase, titles }))
     this.syncHost()
   }
 
