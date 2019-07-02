@@ -175,11 +175,20 @@ class Game {
 
   startScoreboardPhase() {
     this.phase = GamePhase.SCOREBOARD
-    this.startCountdown(10)
+    const currPlayer = this.players[this.currPlayerIndex]
     this.players.forEach(picker => {
       if (picker.pick) {
         const pickedPlayer = this.players.find(p => p.name === picker.pick)
         pickedPlayer.pickers.push(picker.name)
+      }
+      if (picker !== currPlayer) {
+        if (picker.pick === currPlayer.name) {
+          currPlayer.score += 1000
+          picker.score += 1000
+        } else {
+          const pickedPlayer = this.players.find(p => p.name === picker.pick)
+          pickedPlayer && (pickedPlayer.score += 500)
+        }
       }
     })
     this.syncPlayers()
@@ -187,17 +196,7 @@ class Game {
   }
 
   endScoreboardPhase() {
-    const currPlayer = this.players[this.currPlayerIndex]
     this.players.forEach(player => {
-      if (player !== currPlayer) {
-        if (player.pick === currPlayer.name) {
-          currPlayer.score += 1000
-          player.score += 1000
-        } else {
-          const pickedPlayer = this.players.find(p => p.name === player.pick)
-          pickedPlayer && (pickedPlayer.score += 500)
-        }
-      }
       player.isTitleSubmitted = false
       player.isPickSubmitted = false
       player.isCurrPlayer = false
@@ -206,7 +205,10 @@ class Game {
       player.pickers = []
     })
     this.syncPlayers()
-    this.syncHost()
+    if (this.turn >= this.players.length-1)
+      this.startEndLobbyPhase()
+    else
+      this.startTitlingPhase()
   }
 
 
@@ -233,10 +235,7 @@ class Game {
             this.startScoreboardPhase()
             break
           case GamePhase.SCOREBOARD:
-            if (this.turn >= this.players.length-1)
-              this.startEndLobbyPhase()
-            else
-              this.startTitlingPhase()
+            this.endScoreboardPhase()
             break
         }
       }
