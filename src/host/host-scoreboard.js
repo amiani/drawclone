@@ -69,13 +69,18 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
 
   static get styles() {
     return css`
-      .scoreboard-container {
+      :host {
         display: flex;
         flex-direction: column;
+        min-width: 25%;
       }
 
       .score-box {
 
+      }
+
+      player-card {
+        margin-bottom: 5px;
       }
 
       canvas {
@@ -85,12 +90,9 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
   render() {
     //this.state = testState
     return this.showScoreboard ?
-      html`
-        <div class='scoreboard-container'>
-          ${this.state.players
-            .sort((a, b) => b.score - a.score)
-            .map(p => html`<player-card name=${p.name} score=${p.score}></player-card>`)}
-        </div>` :
+      html`${this.state.players
+          .sort((a, b) => b.score - a.score)
+          .map(p => html`<player-card name=${p.name} score=${p.score}></player-card>`)}` :
       html`<canvas id='score-canvas' width=${this.state.screenWidth} height=${this.state.screenHeight}></canvas>`
   }
 })
