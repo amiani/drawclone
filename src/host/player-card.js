@@ -37,7 +37,6 @@ export default customElements.define('player-card', class PlayerCard extends Lit
       #player-name {
         display: block;
         font-size: 1.8rem;
-        margin-right: 50px;
       }
 
       #player-name > span {
@@ -47,6 +46,7 @@ export default customElements.define('player-card', class PlayerCard extends Lit
       #player-score {
         display: block;
         font-size: 1.4rem;
+        margin-left: 50px;
       }
       
       #player-score > span {
