@@ -15,18 +15,20 @@ export default customElements.define('host-endlobby', class HostEndLobby extends
 
   static get styles() {
     return css`
-      ul {
-        list-style: none;
+      :host {
+        min-width: 25%;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      :host > player-card {
+        margin-bottom: 5px;
       }
     `
   }
   render() {
-    return html`
-      <p>Scores</p>
-      <ul>
-        ${this.state.players
-          .sort((a, b) => b.score - a.score)
-          .map(p => html`<li>${p.name}: ${p.score}</li>`)}
-      </ul>`
+    return html`${this.state.players
+      .sort((a, b) => b.score - a.score)
+      .map(p => html`<player-card name=${p.name} score=${p.score}></player-card>`)}`
   }
 })
