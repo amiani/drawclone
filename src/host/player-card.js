@@ -28,6 +28,7 @@ export default customElements.define('player-card', class PlayerCard extends Lit
         display: flex;
         justify-content: space-around;
         text-baseline: middle;
+        padding: 10px;
       }
 
       #player-name {

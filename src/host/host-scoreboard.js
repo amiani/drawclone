@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit-element'
 import rough from 'roughjs'
 import ScoreAnimation from './ScoreAnimation'
+import PlayerCard from './player-card'
 import testState from './testState'
 
 export default customElements.define('host-scoreboard', class HostScoreboard extends LitElement {
@@ -55,7 +56,6 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
       this.activeAnim.play()
     }
     else {
-      console.log('last anim')
       this.showScoreboard = true
       setTimeout(this.actions.endScoreboard, 10000)
     }
@@ -89,7 +89,7 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
         <div class='scoreboard-container'>
           ${this.state.players
             .sort((a, b) => b.score - a.score)
-            .map(p => html`<div class='score-box'>${p.name}: ${p.score}</div>`)}
+            .map(p => html`<player-card name=${p.name} score=${p.score}></player-card>`)}
         </div>` :
       html`<canvas id='score-canvas' width=${this.state.screenWidth} height=${this.state.screenHeight}></canvas>`
   }
