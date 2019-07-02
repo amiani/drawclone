@@ -18,13 +18,17 @@ export default customElements.define('player-picking', class PlayerPicking exten
     return css`
       :host {
         display: flex;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
 
-      #pick-container {
-        list-style: none;
+      wired-button {
+        display: block;
+        max-width: 200px;
       }
-      
+
       p {
         text-align: center;
       }
@@ -34,15 +38,12 @@ export default customElements.define('player-picking', class PlayerPicking exten
     if (this.state.isCurrPlayer)
       return html`<p>It's your drawing!</p>`
 
-    console.log(this.state.isPickSubmitted)
     return this.state.isPickSubmitted ?
       html`<p>Wait for everyone else</p>` :
       html`
-        <ul id='pick-container'>
-          ${this.state.titles.map(g => g.name === this.state.name ? 
-            null :
-            html`<li><wired-button @click=${e=>this.actions.submitPick(g.name)}>${g.text}</wired-button></li>`
-          )}
-        </ul>`
+        ${this.state.titles.map(g => g.name === this.state.name ? 
+          null :
+          html`<wired-button @click=${e=>this.actions.submitPick(g.name)}>${g.text}</wired-button>`
+        )}`
   }
 })
