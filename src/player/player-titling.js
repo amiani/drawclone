@@ -6,6 +6,7 @@ export default customElements.define('player-titling', class PlayerTitling exten
     return {
       state: { type: Object },
       actions: { type: Object },
+      wiredInputWidth: { type: Number },
     }
   }
   constructor() {
@@ -13,6 +14,7 @@ export default customElements.define('player-titling', class PlayerTitling exten
     this.state = {}
     this.actions = {}
     this.title = ''
+    this.wiredInputWidth = 0
   }
 
   firstUpdated() {
@@ -61,6 +63,7 @@ export default customElements.define('player-titling', class PlayerTitling exten
           type='text'
           placeholder='What is that...?'
           .value=${this.title}
+          .size=${this.wiredInputWidth}
           @keydown=${this.handleKeyDown}
           @change=${e => this.title = e.target.value}></wired-input>
         <wired-button @click=${e=>this.actions.submitTitle(this.title)}>Submit</wired-button>`
