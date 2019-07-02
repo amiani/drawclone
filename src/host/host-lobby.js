@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit-element'
+import PlayerCard from './player-card'
 
 export default customElements.define('host-lobby', class HostLobby extends LitElement {
   static get properties() {
@@ -15,22 +16,27 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
 
   static get styles() {
     return css`
-      ul {
-        list-style: none;
+      :host {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        padding: 0;
+        min-width: 25%;
+      }
+      
+      p {
+        text-align: center;
+        font-size: 2rem;
+      }
+
+      .lobby-card {
+        margin-bottom: 5px;
       }
     `
   }
   render() {
     return html`
-      <div>
-        <p>Lobby</p>
-        <ul>
-          ${this.state.players.map(p => html`<li>${p.name}</li>`)}
-        </ul>
-      </div>`
+      ${this.state.players.length > 0 ?
+        html`<p>Look who's here!</p>` :
+        html`<p>Waiting for players...</p>`}
+      ${this.state.players.map(p => html`<player-card class='lobby-card' name=${p.name}></player-card>`)}`
   }
 })
