@@ -18,6 +18,11 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
 
   static get styles() {
     return css`
+      :host {
+        height: 100vh;
+        max-height: 100vh;
+      }
+
       #draw-container {
         display: flex;
         flex-direction: column;
@@ -26,7 +31,7 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
       
       #prompt {
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 2.8vh;
         margin-bottom: 5px;
       }
 
@@ -46,10 +51,10 @@ export default customElements.define('player-drawing', class PlayerDrawing exten
               <draw-canvas
                 .state=${this.state}
                 .actions=${this.actions}
-                width=${window.innerWidth*.9}
-                height=${window.innerWidth*.9*drawingRatio}></draw-canvas>
+                width=${window.innerHeight*.75/drawingRatio}
+                height=${window.innerHeight*.75}></draw-canvas>
             </wired-card>
-            <wired-button elevation=2 @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Submit</wired-button>`}
+            <wired-button elevation=2 @click=${e=>this.actions.submitDrawing(this.state.drawing)}>Done</wired-button>`}
       </div>`
   }
 })

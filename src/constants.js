@@ -1,1 +1,1 @@
-export const drawingRatio = 1.6
+export const drawingRatio = 1.3
