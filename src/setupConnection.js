@@ -25,5 +25,9 @@ module.exports = io => {
         game.syncHost()
       }
     })
+
+    socket.on('host-end-scoreboard-phase', () => {
+      game.endScoreboardPhase()
+    })
   })
 }

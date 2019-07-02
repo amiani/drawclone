@@ -25,7 +25,7 @@ const store = {
 
 	Actions: update => ({
     sync: data => update(data),
-    endScoreboard: () => socket.emit('end-scoreboard'),
+    endScoreboard: () => socket.emit('host-end-scoreboard-phase'),
 		resize: (screenWidth, screenHeight) => update({ screenWidth, screenHeight })
 	})
 }
@@ -79,7 +79,7 @@ customElements.define('host-app', class HostApp extends LitElement {
 					[GamePhase.PICKING]: html`<host-picking .state=${this.state} .actions=${actions}></host-picking>`,
 					[GamePhase.SCOREBOARD]: html`<host-scoreboard .state=${this.state} .actions=${actions}></host-scoreboard>`,
 					[GamePhase.ENDLOBBY]: html`<host-endlobby .state=${this.state} .actions=${actions}></host-endlobby>`
-				}[4]}
+				}[this.state.phase]}
 			</div>
 		`
 	}
