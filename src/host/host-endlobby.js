@@ -19,10 +19,12 @@ export default customElements.define('host-endlobby', class HostEndLobby extends
         min-width: 25%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        height: 90vh;
       }
       
       :host > player-card {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
       }
     `
   }

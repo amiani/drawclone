@@ -72,6 +72,7 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
       :host {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         min-width: 25%;
       }
 
