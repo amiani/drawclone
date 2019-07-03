@@ -31,16 +31,17 @@ export default customElements.define('player-card', class PlayerCard extends Lit
       #card-inner {
         display: flex;
         justify-content: center;
-        padding: 10px;
+        align-items: center;
+        line-height: 1.1;
       }
 
       #player-name {
         display: block;
-        font-size: 1.8rem;
+        font-size: 3rem;
       }
 
       #player-name > span {
-        vertical-align: middle;
+        vertical-align: top;
       }
 
       #player-score {
