@@ -27,7 +27,7 @@ module.exports = io => {
     })
 
     socket.on('host-end-scoreboard-phase', () => {
-      game.endScoreboardPhase()
+      game.phase === GamePhase.SCOREBOARD && game.endScoreboardPhase()
     })
   })
 }
