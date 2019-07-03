@@ -24,7 +24,7 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
       
       p {
         text-align: center;
-        font-size: 2rem;
+        font-size: 2.3rem;
       }
 
       .lobby-card {
