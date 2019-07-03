@@ -30,6 +30,7 @@ export default customElements.define('host-picking', class HostPicking extends L
         text-baseline: middle;
         padding: 20px;
         margin-bottom: 5px;
+        font-size: 2rem;
       }
 
       #titles {
