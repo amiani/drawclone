@@ -10,10 +10,11 @@ class Game {
     this._phase = GamePhase.LOBBY
     this.host = false
     this.players = []
+    this.titles = []
     this.playerOrder = false
     this.turn = -1
     this.currPlayerIndex = -1
-    this.prompts = ['blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones'],
+    this.prompts = ['seagull stealing a hot dog', 'blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones'],
     this.countdown = 30
     this.countdownTimer
   }
@@ -43,7 +44,7 @@ class Game {
       players: this.players,
       countdown: this.countdown,
       currPlayerIndex: this.currPlayerIndex,
-      titles: this.players.map(p => p.isCurrPlayer ? p.prompt : p.title)
+      titles: this.titles
     })
   }
 
@@ -169,11 +170,11 @@ class Game {
     clearInterval(this.countdownTimer)
     this.phase = GamePhase.PICKING
     this.startCountdown(5)
-    const titles = this.players.map(p => ({
+    this.titles = this.players.map(p => ({
       name: p.name,
-      text: p.isCurrPlayer ? p.prompt : p.title
+      text: p.isCurrPlayer ? p.prompt : p.title.length > 0 ? p.title : 'dummy title'
     }))
-    this.players.forEach(p => p.socket.emit('player-sync', { phase: this.phase, titles }))
+    this.players.forEach(p => p.socket.emit('player-sync', { phase: this.phase, titles: this.titles }))
     this.syncHost()
   }
 
