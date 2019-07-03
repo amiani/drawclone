@@ -32,6 +32,15 @@ export default customElements.define('host-titling', class HostTitling extends L
         display: flex;
         justify-content: center;
       }
+
+      #drawing-container {
+        padding: 60px;
+        background-color: white;
+        -webkit-box-shadow: inset 0px 0px 22px 27px rgba(67,111,198,1);
+        -moz-box-shadow: inset 0px 0px 22px 27px rgba(67,111,198,1);
+        box-shadow: inset 0px 0px 22px 27px rgba(67,111,198,1);
+      }
+
       #card {
         border: solid black 2px;
       }
@@ -39,9 +48,11 @@ export default customElements.define('host-titling', class HostTitling extends L
   }
   render() {
     return html`
-      <wired-card id='#card' elevation=5>
-        <canvas id='drawing' width=${this.state.screenHeight*.8/drawingRatio} height=${this.state.screenHeight*.8}></canvas>
-      </wired-card>
+      <div id='drawing-container'>
+        <wired-card id='#card' elevation=5>
+          <canvas id='drawing' width=${this.state.screenHeight*.8/drawingRatio} height=${this.state.screenHeight*.8}></canvas>
+        </wired-card>
+      </div>
       <big-clock time=${this.state.countdown} height=${this.state.screenWidth*.4}></big-clock>`
   }
 })
