@@ -43,10 +43,14 @@ export default class ScoreAnimation {
         y: this.screenHeight/2,
         isVisible: false
       }
+      const a = this.screenWidth / 3
+      const b = this.screenHeight / 3
+      const radius = theta => (a*b) / Math.sqrt(Math.pow(b*Math.cos(theta), 2) + Math.pow(a*Math.sin(theta), 2))
+      const angle = Math.PI + (Math.PI / this.player.pickers.length) * i
       this.timeline.add({
         targets: pickerCircle,
-        x: this.screenWidth/2 + 500*Math.cos((Math.PI/4)*(i + 4)),
-        y: this.screenHeight/2 + 500*Math.sin((Math.PI/4)*(i + 4)),
+        x: this.screenWidth/2 + radius(angle)*Math.cos(angle),
+        y: this.screenHeight/2 + radius(angle)*Math.sin(angle),
         begin: anim => {
           this.audio.play()
           pickerCircle.isVisible = true
