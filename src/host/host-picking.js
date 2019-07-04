@@ -43,7 +43,7 @@ export default customElements.define('host-picking', class HostPicking extends L
   render() {
     return html`
       <div id='titles'>
-        ${this.state.titles.map(g => html`<wired-card>${g}</wired-card>`)}
+        ${this.state.titles.map(t => html`<wired-card>${t.text}</wired-card>`)}
       </div>
       <big-clock time=${this.state.countdown} height=${this.state.screenWidth*.4}></big-clock>`
   }
