@@ -29,7 +29,7 @@ export default class ScoreAnimation {
   setupEllipse() {
     this.ellipse = { x: -100, y: this.screenHeight/2 }
     this.ellipseWidth = this.screenWidth / 3
-    this.ellipseHeight = this.screenWidth * .3
+    this.ellipseHeight = this.screenHeight / 3
     this.screenWidth !== window.innerWidth && console.log('not same!')
     this.ellipse.shape = this.generator.ellipse(0, 0, this.ellipseWidth, this.ellipseHeight, {
       roughness: 1.5,
@@ -43,7 +43,6 @@ export default class ScoreAnimation {
   }
 
   drawEllipse(ctx, rc) {
-    ctx.translate(this.ellipse.x, this.ellipse.y)
     ctx.beginPath()
     ctx.ellipse(0, 0, this.ellipseWidth/2, this.ellipseHeight/2, 0, 0, 2*Math.PI)
     ctx.fillStyle = '#db3a34'
@@ -75,6 +74,26 @@ export default class ScoreAnimation {
     })
   }
 
+  drawCircles(ctx, rc) {
+    ctx.fillStyle = '#ffc857'
+    ctx.strokeStyle = '#ffc857'
+    const diameter = this.screenHeight*2/9
+    this.pickerCircles.forEach(pc => {
+      if (pc.isVisible) {
+        rc.circle(pc.x, pc.y, diameter, {
+          strokeWidth: 5
+        })
+        this.fitText(pc.name, 80, diameter*.9, ctx)
+        ctx.textBaseline = this.isAuthorVisible && this.player.isCurrPlayer ? 'bottom' : 'middle'
+        ctx.fillText(pc.name, pc.x, pc.y)
+        if (this.isAuthorVisible && this.player.isCurrPlayer) {
+          ctx.textBaseline = 'top'
+          ctx.strokeText(1000, pc.x, pc.y)
+        }
+      }
+    })
+  }
+
   fitText(text, maxFontSize, width, ctx) {
     let fontSize = maxFontSize+1
     do {
@@ -83,11 +102,11 @@ export default class ScoreAnimation {
   }
 
   drawTitle(ctx) {
-    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
     const text = this.player.title ? this.player.title : this.player.prompt
     this.fitText(text, 80, this.ellipseWidth*.9, ctx)
     ctx.fillStyle = 'white'
-    ctx.fillText(text, 0, -50)
+    ctx.fillText(text, 0, this.isAuthorVisible ? -50 : 0)
   }
 
   setupReveal() {
@@ -103,23 +122,8 @@ export default class ScoreAnimation {
   draw(ctx, rc) {
     ctx.textAlign = 'center'
 
-    ctx.fillStyle = '#ffc857'
-    ctx.strokeStyle = '#ffc857'
-    this.pickerCircles.forEach(pc => {
-      if (pc.isVisible) {
-        rc.circle(pc.x, pc.y, 170, {
-          strokeWidth: 5
-        })
-        ctx.font = '40px "Gloria Hallelujah"'
-        ctx.textBaseline = this.isAuthorVisible && this.player.isCurrPlayer ? 'bottom' : 'middle'
-        ctx.fillText(pc.name, pc.x, pc.y)
-        if (this.isAuthorVisible && this.player.isCurrPlayer) {
-          ctx.textBaseline = 'top'
-          ctx.strokeText(1000, pc.x, pc.y)
-        }
-      }
-    })
-
+    this.drawCircles(ctx, rc)
+    ctx.translate(this.ellipse.x, this.ellipse.y)
     this.drawEllipse(ctx, rc)
     this.drawTitle(ctx)
 
@@ -133,7 +137,6 @@ export default class ScoreAnimation {
       ctx.fillStyle = '#ffc857'
       ctx.fillText(message, 0, 70)
 
-      ctx.textBaseline = 'middle'
       const points = this.player.pickers.length * (this.player.isCurrPlayer ? 1000 : 500)
       ctx.fillText(`${points} points!`, 0, 250)
     }
