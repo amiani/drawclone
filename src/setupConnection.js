@@ -1,33 +1,35 @@
 const Game = require('./Game');
 const GamePhase = require('./GamePhase')
 
+const games = {}
+
 module.exports = io => {
-  const game = new Game('drawclone', io)
-  io.on('connection', socket => {
+  const karakuSpace = io.of('/karaku')
+  karakuSpace.on('connection', socket => {
     console.log('client connected')
-    socket.on('player-join', (name, ack) => {
-      if (name && game.phase === GamePhase.LOBBY) {
-        const player = game.addPlayer(socket, name)
-        ack(player)
+    socket.on('player-join', (data, ack) => {
+      if (data.name && data.room) {
+        const room = data.room.toUpperCase()
+        if (games[room]) {
+          games[room].addPlayer(socket, data.name)
+        } else {
+          ack({ error: { msg: 'No game with that name' } })
+        }
       } else {
-        ack({ error: { msg: 'invalid player data or tried to join in wrong phase'}})
+        ack({ error: { msg: 'invalid data' } })
       }
     })
 
-    socket.on('host-join', (data, ack) => {
-      if (game.host) {
-        game.host.socket = socket
-        ack(game.host)
-        game.syncHost()
+    socket.on('host-join', room => {
+      let game = games[room]
+      if (game) {
+        game.addHost(socket)
       } else {
-        const host = game.addHost(socket)
-        ack(host)
-        game.syncHost()
+        const code = () => Math.round((Math.random() * 25) + 65)
+        const roomName = String.fromCharCode(code(), code(), code(), code())
+        game = new Game(roomName, karakuSpace.to(roomName), socket)
+        games[roomName] = game
       }
-    })
-
-    socket.on('host-end-scoreboard-phase', () => {
-      game.phase === GamePhase.SCOREBOARD && game.endScoreboardPhase()
     })
   })
 }

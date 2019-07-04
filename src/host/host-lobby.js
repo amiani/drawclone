@@ -22,6 +22,10 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
         min-width: 25%;
       }
       
+      #room-name {
+        font-size: 3rem;
+      }
+
       p {
         text-align: center;
         font-size: 2.3rem;
@@ -34,6 +38,7 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
   }
   render() {
     return html`
+      <p>Enter code: <span id='room-name'>${this.state.roomName}</span></p>
       ${this.state.players.length > 0 ?
         html`<p>Look who's here!</p>` :
         html`<p>Waiting for players...</p>`}

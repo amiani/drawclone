@@ -8,7 +8,7 @@ import PlayerTitling from './player-titling'
 import PlayerPicking from './player-picking'
 import PlayerEndLobby from './player-endlobby'
 
-const socket = io('http://192.168.0.105:8081')
+const socket = io('http://192.168.0.105:8081/karaku')
 const store = {
 	Initial: () => ({
 		phase: GamePhase.LOBBY,
@@ -25,8 +25,8 @@ const store = {
 	}),
 	
 	Actions: update => ({
-		submitName: name => {
-			socket.emit('player-join', name, data => {
+		join: (name, room) => {
+			socket.emit('player-join', { name, room }, data => {
 				if (data.error) {
 					console.log(data.error.msg)
 				} else {

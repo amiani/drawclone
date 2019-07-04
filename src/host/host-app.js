@@ -9,7 +9,7 @@ import HostPicking from './host-picking'
 import HostScoreboard from './host-scoreboard'
 import HostEndLobby from './host-endlobby'
 
-const socket = io('http://localhost:8081')
+const socket = io('http://localhost:8081/karaku')
 
 const store = {
 	Initial: () => ({

@@ -3,12 +3,10 @@ const Player = require('./player/Player')
 const Host = require('./host/Host')
 
 class Game {
-  //Game could take a socketio namespace (or similar) in constructor and manage all its own connections
-  constructor(roomName, io) {
+  constructor(roomName, room, hostSocket) {
     this.roomName = roomName
-    this.io = io
+    this.room = room
     this._phase = GamePhase.LOBBY
-    this.host = false
     this.players = []
     this.titles = []
     this.playerOrder = false
@@ -17,6 +15,7 @@ class Game {
     this.prompts = ['seagull stealing a hot dog', 'blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones'],
     this.countdown = 30
     this.countdownTimer
+    this.addHost(hostSocket)
   }
 
   get phase() { return this._phase }
@@ -26,13 +25,18 @@ class Game {
   }
 
   addHost(socket) {
-    this.host = new Host(socket, this.players)
+    if (this.host)
+      this.host.socket = socket
+    else
+      this.host = new Host(socket, this.players)
     this.registerHostListeners(this.host.socket)
-    return this.host
+    this.syncHost()
   }
 
   registerHostListeners(socket) {
-
+    socket.on('host-end-scoreboard-phase', () => {
+      game.phase === GamePhase.SCOREBOARD && game.endScoreboardPhase()
+    })
   }
 
   syncPlayers() {
@@ -41,6 +45,7 @@ class Game {
   syncHost() {
     this.host.socket.emit('host-sync', {
       phase: this.phase,
+      roomName: this.roomName,
       players: this.players,
       countdown: this.countdown,
       currPlayerIndex: this.currPlayerIndex,
@@ -49,12 +54,18 @@ class Game {
   }
 
   addPlayer(socket, name) {
-    const isLeader = this.players.length === 0
-    const player = new Player(socket, name, isLeader, ()=>this.phase)
-    this.registerPlayerListeners(player)
-    this.players.push(player)
-    if (this.host) this.host.socket.emit('host-sync', { players: this.players })
-    return player
+    let player = this.players.find(e => e.name === name)
+    if (player) {
+      player.socket = socket
+      this.registerPlayerListeners(player)
+    } else {
+      const isLeader = this.players.length === 0
+      player = new Player(socket, name, isLeader, ()=>this.phase)
+      this.registerPlayerListeners(player)
+      this.players.push(player)
+      this.syncHost()
+    }
+    player.socket.emit('player-sync', player)
   }
   registerPlayerListeners(player) {
     const { socket } = player
@@ -120,7 +131,7 @@ class Game {
 
     socket.on('new-players', () => {
       this.phase = GamePhase.LOBBY
-      this.io.emit('player-sync', { phase: this.phase })
+      this.room.emit('player-sync', { phase: this.phase })
     })
   }
 
