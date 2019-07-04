@@ -20,7 +20,6 @@ export default customElements.define('player-picking', class PlayerPicking exten
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
         height: 100vh;
       }
 
