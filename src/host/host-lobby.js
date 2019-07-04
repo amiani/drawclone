@@ -1,17 +1,31 @@
 import { LitElement, html, css } from 'lit-element'
+import { WiredToggle } from 'wired-elements'
 import PlayerCard from './player-card'
 
 export default customElements.define('host-lobby', class HostLobby extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
-      actions: { type: Object }
+      actions: { type: Object },
+      isFullscreen: { type: Boolean },
     }
   }
   constructor() {
     super()
     this.state = {}
     this.actions = {}
+    this.isFullscreen = !!document.fullscreenElement
+    console.log(this.isFullscreen)
+  }
+
+  toggleFullscreen(e) {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen(); 
+      }
+    }
   }
 
   static get styles() {
@@ -20,15 +34,25 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
         display: flex;
         flex-direction: column;
         min-width: 25%;
+        font-size: 2.3rem;
       }
       
+      #fullscreen-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      wired-toggle {
+        margin-left: 5px;
+      }
+
       #room-name {
         font-size: 3rem;
       }
 
       p {
         text-align: center;
-        font-size: 2.3rem;
       }
 
       .lobby-card {
@@ -38,6 +62,12 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
   }
   render() {
     return html`
+      <div id='fullscreen-container'>
+        <div>Fullscreen</div>
+        <wired-toggle
+          .checked=${this.isFullscreen}
+          @change=${this.toggleFullscreen}></wired-toggle>
+      </div>
       <p>Enter code: <span id='room-name'>${this.state.roomName}</span></p>
       ${this.state.players.length > 0 ?
         html`<p>Look who's here!</p>` :
