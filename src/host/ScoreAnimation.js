@@ -46,7 +46,7 @@ export default class ScoreAnimation {
     ctx.translate(this.ellipse.x, this.ellipse.y)
     ctx.beginPath()
     ctx.ellipse(0, 0, this.ellipseWidth/2, this.ellipseHeight/2, 0, 0, 2*Math.PI)
-    ctx.fillStyle = 'white'
+    ctx.fillStyle = '#db3a34'
     ctx.fill()
     rc.draw(this.ellipse.shape)
   }
@@ -87,7 +87,8 @@ export default class ScoreAnimation {
     ctx.textBaseline = this.isAuthorVisible ? 'bottom' : 'middle'
     const text = this.player.title ? this.player.title : this.player.prompt
     this.fitText(text, 80, this.ellipseWidth*.9, ctx)
-    ctx.strokeText(text, 0, 0)
+    ctx.fillStyle = 'white'
+    ctx.fillText(text, 0, 0)
   }
 
   setupReveal() {
@@ -103,12 +104,14 @@ export default class ScoreAnimation {
   draw(ctx, rc) {
     ctx.textAlign = 'center'
 
+    ctx.fillStyle = '#ffc857'
+    ctx.strokeStyle = '#ffc857'
     this.pickerCircles.forEach(pc => {
       if (pc.isVisible) {
         rc.circle(pc.x, pc.y, 170)
         ctx.font = '40px "Gloria Hallelujah"'
         ctx.textBaseline = this.isAuthorVisible && this.player.isCurrPlayer ? 'bottom' : 'middle'
-        ctx.strokeText(pc.name, pc.x, pc.y)
+        ctx.fillText(pc.name, pc.x, pc.y)
         if (this.isAuthorVisible && this.player.isCurrPlayer) {
           ctx.textBaseline = 'top'
           ctx.strokeText(1000, pc.x, pc.y)
@@ -126,11 +129,12 @@ export default class ScoreAnimation {
         'actual title!' :
         `${this.player.name}'s answer`
       this.fitText(message, 80, this.ellipseWidth*.9, ctx)
-      ctx.strokeText(message, 0, 0)
+      ctx.fillStyle = '#ffc857'
+      ctx.fillText(message, 0, 0)
 
       ctx.textBaseline = 'middle'
       const points = this.player.pickers.length * (this.player.isCurrPlayer ? 1000 : 500)
-      ctx.strokeText(`${points} points!`, 0, 250)
+      ctx.fillText(`${points} points!`, 0, 250)
     }
     ctx.setTransform(1, 0, 0, 1, 0, 0)
   }
