@@ -74,10 +74,7 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
         flex-direction: column;
         justify-content: center;
         min-width: 25%;
-      }
-
-      .score-box {
-
+        height: 100vh;
       }
 
       player-card {
