@@ -84,11 +84,10 @@ export default class ScoreAnimation {
 
   drawTitle(ctx) {
     ctx.textAlign = 'center'
-    ctx.textBaseline = this.isAuthorVisible ? 'bottom' : 'middle'
     const text = this.player.title ? this.player.title : this.player.prompt
     this.fitText(text, 80, this.ellipseWidth*.9, ctx)
     ctx.fillStyle = 'white'
-    ctx.fillText(text, 0, 0)
+    ctx.fillText(text, 0, -50)
   }
 
   setupReveal() {
@@ -108,7 +107,9 @@ export default class ScoreAnimation {
     ctx.strokeStyle = '#ffc857'
     this.pickerCircles.forEach(pc => {
       if (pc.isVisible) {
-        rc.circle(pc.x, pc.y, 170)
+        rc.circle(pc.x, pc.y, 170, {
+          strokeWidth: 5
+        })
         ctx.font = '40px "Gloria Hallelujah"'
         ctx.textBaseline = this.isAuthorVisible && this.player.isCurrPlayer ? 'bottom' : 'middle'
         ctx.fillText(pc.name, pc.x, pc.y)
@@ -123,14 +124,14 @@ export default class ScoreAnimation {
     this.drawTitle(ctx)
 
     if (this.isAuthorVisible) {
-      ctx.textBaseline = 'top'
+      ctx.textBaseline = 'middle'
       ctx.font = '80px "Gloria Hallelujah"'
       const message = this.player.isCurrPlayer ?
         'actual title!' :
         `${this.player.name}'s answer`
       this.fitText(message, 80, this.ellipseWidth*.9, ctx)
       ctx.fillStyle = '#ffc857'
-      ctx.fillText(message, 0, 0)
+      ctx.fillText(message, 0, 70)
 
       ctx.textBaseline = 'middle'
       const points = this.player.pickers.length * (this.player.isCurrPlayer ? 1000 : 500)
