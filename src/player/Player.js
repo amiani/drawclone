@@ -1,8 +1,11 @@
+const colors = ['green', 'red', 'black', 'white', 'pink', 'purple']
+let colorIndex = 0
 module.exports = class Player {
   constructor(socket, name, isLeader, getPhase) {
     this.socket = socket
     this.getPhase = getPhase
     this.name = name
+    this.color = colors[colorIndex++]
     this.isLeader = isLeader
     this.score = 0
     this.prompt = ''
@@ -20,6 +23,7 @@ module.exports = class Player {
   toJSON() {
     return {
       name: this.name,
+      color: this.color,
       phase: this.getPhase(),
       isLeader: this.isLeader,
       score: this.score,

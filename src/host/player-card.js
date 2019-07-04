@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element'
+import { LitElement, html, css, unsafeCSS } from 'lit-element'
 import { WiredCard } from 'wired-elements'
 
 export default customElements.define('player-card', class PlayerCard extends LitElement {
@@ -6,7 +6,8 @@ export default customElements.define('player-card', class PlayerCard extends Lit
     return {
       name: { type: String },
       score: { type: Number },
-      elevation: { type: Number }
+      elevation: { type: Number },
+      color: { type: String },
     }
   }
   constructor() {
@@ -14,6 +15,7 @@ export default customElements.define('player-card', class PlayerCard extends Lit
     this.name = ''
     this.score = -100
     this.elevation = 2
+    this.color = 'yellow'
   }
 
   firstUpdated() {
@@ -57,6 +59,11 @@ export default customElements.define('player-card', class PlayerCard extends Lit
   }
   render() {
     return html`
+      <style>
+        #card-inner {
+          color: ${this.color};
+        }
+      </style>
       <wired-card id='card-container' elevation=${this.elevation}>
         <div id='card-inner'>
           <div id='player-name'><span>${this.name}</span></div>

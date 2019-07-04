@@ -37,6 +37,6 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
       ${this.state.players.length > 0 ?
         html`<p>Look who's here!</p>` :
         html`<p>Waiting for players...</p>`}
-      ${this.state.players.map(p => html`<player-card class='lobby-card' name=${p.name}></player-card>`)}`
+      ${this.state.players.map(p => html`<player-card class='lobby-card' name=${p.name} color=${p.color}></player-card>`)}`
   }
 })
