@@ -22,9 +22,16 @@ export default class ScoreAnimation {
     })
   }
 
+  ellipseRadius(a, b, theta) {
+    return (a*b) / Math.sqrt(Math.pow(b*Math.cos(theta), 2) + Math.pow(a*Math.sin(theta), 2))
+  }
+
   setupEllipse() {
     this.ellipse = { x: -100, y: this.screenHeight/2 }
-    this.ellipse.shape = this.generator.ellipse(0, 0, this.screenWidth/3, this.screenHeight*.3, {
+    this.ellipseWidth = this.screenWidth / 3
+    this.ellipseHeight = this.screenWidth * .3
+    this.screenWidth !== window.innerWidth && console.log('not same!')
+    this.ellipse.shape = this.generator.ellipse(0, 0, this.ellipseWidth, this.ellipseHeight, {
       roughness: 1.5,
       strokeWidth: 9,
     })
@@ -33,6 +40,15 @@ export default class ScoreAnimation {
       x: this.screenWidth/2,
       duration: 3000,
     })
+  }
+
+  drawEllipse(ctx, rc) {
+    ctx.translate(this.ellipse.x, this.ellipse.y)
+    ctx.beginPath()
+    ctx.ellipse(0, 0, this.ellipseWidth/2, this.ellipseHeight/2, 0, 0, 2*Math.PI)
+    ctx.fillStyle = 'white'
+    ctx.fill()
+    rc.draw(this.ellipse.shape)
   }
 
   setupCircles() {
@@ -45,12 +61,11 @@ export default class ScoreAnimation {
       }
       const a = this.screenWidth / 3
       const b = this.screenHeight / 3
-      const radius = theta => (a*b) / Math.sqrt(Math.pow(b*Math.cos(theta), 2) + Math.pow(a*Math.sin(theta), 2))
       const angle = Math.PI + (Math.PI / this.player.pickers.length) * i
       this.timeline.add({
         targets: pickerCircle,
-        x: this.screenWidth/2 + radius(angle)*Math.cos(angle),
-        y: this.screenHeight/2 + radius(angle)*Math.sin(angle),
+        x: this.screenWidth/2 + this.ellipseRadius(a, b, angle)*Math.cos(angle),
+        y: this.screenHeight/2 + this.ellipseRadius(a, b, angle)*Math.sin(angle),
         begin: anim => {
           this.audio.play()
           pickerCircle.isVisible = true
@@ -58,6 +73,21 @@ export default class ScoreAnimation {
       })
       return pickerCircle
     })
+  }
+
+  fitText(text, maxFontSize, width, ctx) {
+    let fontSize = maxFontSize+1
+    do {
+      ctx.font = `${--fontSize}px "Gloria Hallelujah"`
+    } while(ctx.measureText(text).width > width)
+  }
+
+  drawTitle(ctx) {
+    ctx.textAlign = 'center'
+    ctx.textBaseline = this.isAuthorVisible ? 'bottom' : 'middle'
+    const text = this.player.title ? this.player.title : this.player.prompt
+    this.fitText(text, 80, this.ellipseWidth*.9, ctx)
+    ctx.strokeText(text, 0, 0)
   }
 
   setupReveal() {
@@ -86,17 +116,8 @@ export default class ScoreAnimation {
       }
     })
 
-    ctx.translate(this.ellipse.x, this.ellipse.y)
-    ctx.beginPath()
-    ctx.ellipse(0 ,0, this.screenWidth*.4/2, this.screenHeight*.3/2, 0, 0, 2*Math.PI)
-    ctx.fillStyle = 'white'
-    ctx.fill()
-    rc.draw(this.ellipse.shape)
-
-    ctx.font = '80px "Gloria Hallelujah"'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = this.isAuthorVisible ? 'bottom' : 'middle'
-    ctx.strokeText(this.player.title ? this.player.title : this.player.prompt, 0, 0)
+    this.drawEllipse(ctx, rc)
+    this.drawTitle(ctx)
 
     if (this.isAuthorVisible) {
       ctx.textBaseline = 'top'
@@ -104,6 +125,7 @@ export default class ScoreAnimation {
       const message = this.player.isCurrPlayer ?
         'actual title!' :
         `${this.player.name}'s answer`
+      this.fitText(message, 80, this.ellipseWidth*.9, ctx)
       ctx.strokeText(message, 0, 0)
 
       ctx.textBaseline = 'middle'
