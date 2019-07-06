@@ -1,5 +1,6 @@
 import { LitElement, html, css, unsafeCSS } from 'lit-element'
 import { WiredCard } from 'wired-elements'
+import rough from 'roughjs'
 
 export default customElements.define('player-card', class PlayerCard extends LitElement {
   static get properties() {
@@ -19,6 +20,15 @@ export default customElements.define('player-card', class PlayerCard extends Lit
   }
 
   firstUpdated() {
+    this.svg = this.shadowRoot.querySelector('svg')
+    this.rs = rough.svg(this.svg)
+    const width = this.svg.parentNode.width
+    const height = this.svg.parentNode.height
+    this.svg.appendChild(this.rs.rectangle(0, 0, 313, 52, {
+      fill: 'white',
+      stroke: 'transparent',
+      strokeWidth: 1,
+    }))
     setInterval(() => {
       this.elevation = (Math.random() * 3) + 2
     }, 333)
@@ -34,12 +44,14 @@ export default customElements.define('player-card', class PlayerCard extends Lit
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
         line-height: 1.1;
       }
 
       #player-name {
         display: block;
         font-size: 3rem;
+        z-index: 2;
       }
 
       #player-name > span {
@@ -50,14 +62,24 @@ export default customElements.define('player-card', class PlayerCard extends Lit
         display: block;
         font-size: 1.4rem;
         margin-left: 50px;
+        z-index: 2;
       }
       
       #player-score > span {
         vertical-align: middle;
       }
+      
+      svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
     `
   }
   render() {
+    console.log(this.color)
     return html`
       <style>
         #card-inner {
@@ -66,6 +88,7 @@ export default customElements.define('player-card', class PlayerCard extends Lit
       </style>
       <wired-card id='card-container' elevation=${this.elevation}>
         <div id='card-inner'>
+          <svg viewBox='0 0 300 50' preserveAspectRatio='none'></svg>
           <div id='player-name'><span>${this.name}</span></div>
           ${this.score >= 0 ? html`<div id='player-score'><span>${this.score}</span></div>` : null}
         </div>
