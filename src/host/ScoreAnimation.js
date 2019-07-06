@@ -34,6 +34,7 @@ export default class ScoreAnimation {
     this.ellipse.shape = this.generator.ellipse(0, 0, this.ellipseWidth, this.ellipseHeight, {
       roughness: 1.5,
       strokeWidth: 9,
+      fill: 'white'
     })
     this.timeline.add({
       targets: this.ellipse,
@@ -44,9 +45,6 @@ export default class ScoreAnimation {
 
   drawEllipse(ctx, rc) {
     ctx.beginPath()
-    ctx.ellipse(0, 0, this.ellipseWidth/2, this.ellipseHeight/2, 0, 0, 2*Math.PI)
-    ctx.fillStyle = '#db3a34'
-    ctx.fill()
     rc.draw(this.ellipse.shape)
   }
 
