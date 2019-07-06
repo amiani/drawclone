@@ -40,7 +40,7 @@ class Game {
         phase: GamePhase.LOBBY,
         name: '',
       }))
-      this.endGame(roomName, false)
+      this.endGame(this.roomName, false)
     })
 
     socket.on('host-end-scoreboard-phase', () => {
@@ -146,7 +146,7 @@ class Game {
         phase: this.phase,
         name: '',
       })
-      this.endGame(roomName, true, this.host.socket)
+      this.endGame(this.roomName, true, this.host.socket)
     })
   }
 
