@@ -5,6 +5,17 @@ const games = {}
 
 module.exports = io => {
   const karakuSpace = io.of('/karaku')
+
+  const setupGame = hostSocket => {
+    const code = () => Math.round((Math.random() * 25) + 65)
+    const roomName = String.fromCharCode(code(), code(), code(), code())
+    games[roomName] = new Game(roomName, karakuSpace.to(roomName), hostSocket, endGame)
+  }
+  const endGame = (name, restart, hostSocket) => {
+    delete games[name]
+    restart && hostSocket && setupGame(hostSocket)
+  }
+
   karakuSpace.on('connection', socket => {
     console.log('client connected')
     socket.on('player-join', (data, ack) => {
@@ -25,10 +36,7 @@ module.exports = io => {
       if (game) {
         game.addHost(socket)
       } else {
-        const code = () => Math.round((Math.random() * 25) + 65)
-        const roomName = String.fromCharCode(code(), code(), code(), code())
-        game = new Game(roomName, karakuSpace.to(roomName), socket)
-        games[roomName] = game
+        setupGame(socket)
       }
     })
   })

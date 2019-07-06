@@ -3,7 +3,7 @@ const Player = require('./player/Player')
 const Host = require('./host/Host')
 
 class Game {
-  constructor(roomName, room, hostSocket) {
+  constructor(roomName, room, hostSocket, endGame) {
     this.roomName = roomName
     this.room = room
     this._phase = GamePhase.LOBBY
@@ -15,6 +15,7 @@ class Game {
     this.prompts = ['seagull stealing a hot dog', 'blue shoe', 'desperate housewife', 'among the bears', 'fortuitous shepherd', 'free the penguin horde', 'jesus slept', 'bugatti jones'],
     this.countdown = 30
     this.countdownTimer
+    this.endGame = endGame
     this.addHost(hostSocket)
   }
 
@@ -34,8 +35,16 @@ class Game {
   }
 
   registerHostListeners(socket) {
+    socket.on('disconnect', reason => {
+      this.players.forEach(p => p.socket.emit('player-sync', {
+        phase: GamePhase.LOBBY,
+        name: '',
+      }))
+      this.endGame(roomName, false)
+    })
+
     socket.on('host-end-scoreboard-phase', () => {
-      game.phase === GamePhase.SCOREBOARD && game.endScoreboardPhase()
+      this.phase === GamePhase.SCOREBOARD && this.endScoreboardPhase()
     })
   }
 
@@ -69,6 +78,8 @@ class Game {
   }
   registerPlayerListeners(player) {
     const { socket } = player
+    socket.on('disconnect', reason => console.log(reason))
+
     socket.on('start-game', () => {
       if (this.phase === 0 && this.host && this.players.length > 2) {
         this.startDrawingPhase()
@@ -131,7 +142,11 @@ class Game {
 
     socket.on('new-players', () => {
       this.phase = GamePhase.LOBBY
-      this.room.emit('player-sync', { phase: this.phase })
+      this.room.emit('player-sync', {
+        phase: this.phase,
+        name: '',
+      })
+      this.endGame(roomName, true, this.host.socket)
     })
   }
 
