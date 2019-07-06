@@ -1,4 +1,4 @@
-const colors = ['green', 'red', 'black', 'white', 'pink', 'purple']
+const colors = ['#31263e', '#ecebe4', '#80ff72', '#eec0c6', '#e63946', '#565554', '#97cc04', ]
 let colorIndex = 0
 module.exports = class Player {
   constructor(socket, name, isLeader, getPhase) {
