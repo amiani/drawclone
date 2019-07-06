@@ -90,7 +90,7 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
     return this.showScoreboard ?
       html`${this.state.players
           .sort((a, b) => b.score - a.score)
-          .map(p => html`<player-card name=${p.name} score=${p.score}></player-card>`)}` :
+          .map(p => html`<player-card name=${p.name} score=${p.score} color=${p.color}></player-card>`)}` :
       html`<canvas id='score-canvas' width=${this.state.screenWidth} height=${this.state.screenHeight}></canvas>`
   }
 })

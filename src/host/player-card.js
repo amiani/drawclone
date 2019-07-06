@@ -15,7 +15,7 @@ export default customElements.define('player-card', class PlayerCard extends Lit
     this.name = ''
     this.score = -100
     this.elevation = 2
-    this.color = 'yellow'
+    this.color = '#ffc857'
   }
 
   firstUpdated() {
