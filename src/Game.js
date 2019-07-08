@@ -4,6 +4,8 @@ const Host = require('./host/Host')
 
 class Game {
   constructor(roomName, room, hostSocket, endGame) {
+    this.colors = ['#ecebe4', '#80ff72', '#eec0c6', '#e63946', '#565554', '#97cc04', ]
+    this.colorIndex = 0
     this.roomName = roomName
     this.room = room
     this._phase = GamePhase.LOBBY
@@ -69,7 +71,7 @@ class Game {
       this.registerPlayerListeners(player)
     } else {
       const isLeader = this.players.length === 0
-      player = new Player(socket, name, isLeader, ()=>this.phase)
+      player = new Player(socket, name, this.colors[this.colorIndex++], isLeader, ()=>this.phase)
       this.registerPlayerListeners(player)
       this.players.push(player)
       this.syncHost()
