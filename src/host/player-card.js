@@ -25,7 +25,10 @@ export default customElements.define('player-card', class PlayerCard extends Lit
     const width = this.svg.parentNode.width
     const height = this.svg.parentNode.height
     this.svg.appendChild(this.rs.rectangle(0, 0, 313, 52, {
-      fill: 'white',
+      fill: 'black',
+      fillWeight: 3,
+      fillStyle: 'cross-hatch',
+      hachureGap: 10,
       stroke: 'transparent',
       strokeWidth: 1,
     }))
