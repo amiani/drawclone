@@ -60,7 +60,6 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
     `
   }
   render() {
-    console.log(this.state.players)
     return html`
       <div id='fullscreen-container'>
         <div>Fullscreen</div>
