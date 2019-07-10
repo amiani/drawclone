@@ -17,13 +17,14 @@ export default customElements.define('host-drawing', class HostDrawing extends L
   static get styles() {
     return css`
       :host {
-        display: block;
+        width: 100%;
+        height: 100%;
       }`
   }
   render() {
-    const length = this.state.screenWidth < this.state.screenHeight ?
-      this.state.screenWidth :
-      this.state.screenHeight
+    const length = this.shadowRoot.host.clientWidth < this.shadowRoot.host.clientHeight ?
+      this.shadowRoot.host.clientWidth :
+      this.shadowRoot.host.clientHeight
     return html`<big-clock time=${this.state.countdown} height=${length}></big-clock>`
   }
 })

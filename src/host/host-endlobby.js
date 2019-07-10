@@ -20,17 +20,20 @@ export default customElements.define('host-endlobby', class HostEndLobby extends
         display: flex;
         flex-direction: column;
         justify-content: center;
-        height: 90vh;
+        align-items: center;
+        width: 100%;
+        height: 100%;
       }
       
       :host > player-card {
         margin-bottom: 10px;
+        min-width: 25%;
       }
     `
   }
   render() {
     return html`${this.state.players
       .sort((a, b) => b.score - a.score)
-      .map(p => html`<player-card name=${p.name} score=${p.score}></player-card>`)}`
+      .map(p => html`<player-card name=${p.name} score=${p.score} color=${p.color}></player-card>`)}`
   }
 })

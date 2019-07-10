@@ -20,6 +20,8 @@ export default customElements.define('host-picking', class HostPicking extends L
       :host {
         display: flex;
         font-size: 1.5rem;
+        width: 100%;
+        height: 100%;
       }
       :host > div {
         flex-grow: 1;
@@ -31,12 +33,14 @@ export default customElements.define('host-picking', class HostPicking extends L
         padding: 20px;
         margin-bottom: 5px;
         font-size: 2rem;
+        min-width: 25%;
       }
 
       #titles {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
       }
     `
   }

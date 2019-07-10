@@ -31,6 +31,8 @@ export default customElements.define('host-titling', class HostTitling extends L
       :host {
         display: flex;
         justify-content: center;
+        height: 100%;
+        width: 100%;
       }
 
       #drawing-container {
@@ -47,12 +49,15 @@ export default customElements.define('host-titling', class HostTitling extends L
     `
   }
   render() {
+    const length = this.shadowRoot.host.clientWidth < this.shadowRoot.host.clientHeight ?
+      this.shadowRoot.host.clientWidth :
+      this.shadowRoot.host.clientHeight
     return html`
       <div id='drawing-container'>
         <wired-card id='#card' elevation=5>
-          <canvas id='drawing' width=${this.state.screenHeight*.8/drawingRatio} height=${this.state.screenHeight*.8}></canvas>
+          <canvas id='drawing' width=${length/drawingRatio} height=${length}></canvas>
         </wired-card>
       </div>
-      <big-clock time=${this.state.countdown} height=${this.state.screenWidth*.4}></big-clock>`
+      <big-clock time=${this.state.countdown} height=${length}></big-clock>`
   }
 })

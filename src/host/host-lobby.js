@@ -34,6 +34,7 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
         flex-direction: column;
         min-width: 25%;
         font-size: 2.3rem;
+        align-items: center;
       }
       
       #fullscreen-container {
@@ -56,6 +57,7 @@ export default customElements.define('host-lobby', class HostLobby extends LitEl
 
       .lobby-card {
         margin-bottom: 5px;
+        min-width: 25%;
       }
     `
   }

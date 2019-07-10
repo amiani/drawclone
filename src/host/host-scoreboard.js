@@ -73,12 +73,14 @@ export default customElements.define('host-scoreboard', class HostScoreboard ext
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-width: 25%;
-        height: 100vh;
+        align-items: center;
+        height: 100%;
+        width: 100%;
       }
 
       player-card {
         margin-bottom: 5px;
+        min-width: 25%;
       }
 
       canvas {
