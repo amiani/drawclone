@@ -19,9 +19,8 @@ export default customElements.define('host-titling', class HostTitling extends L
   }
 
   firstUpdated() {
-    this.canvas = this.shadowRoot.getElementById('drawing')
+    this.canvas = this.shadowRoot.querySelector('#drawing')
     this.ctx = this.canvas.getContext('2d')
-
     this.svg = this.shadowRoot.querySelector('svg')
     this.rs = rough.svg(this.svg)
     this.svg.appendChild(this.rs.rectangle(3, 3, this.width-6, this.height-6, {
@@ -51,27 +50,32 @@ export default customElements.define('host-titling', class HostTitling extends L
 
       #drawing-frame {
         position: relative;
+        background-color: white;
       }
       
       svg {
         position: absolute;
+        display: block;
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 10;
-        background-color: white;
+        z-index: 5;
+      }
+
+      #drawing {
+        z-index: 6;
+        display: block;
       }
     `
   }
   render() {
     this.height = this.shadowRoot.host.clientHeight*.9
-    console.log(this.height)
     this.width = this.height/drawingRatio
     return html`
       <div id='drawing-container'>
         <div id='drawing-frame'>
-          <svg viewBox='0 0 ${this.width} ${this.height}' preserveAspectRatio='none'></svg>
           <canvas id='drawing' width=${this.width} height=${this.height}></canvas>
+          <svg viewBox='0 0 ${this.width} ${this.height}' preserveAspectRatio='none'></svg>
         </div>
       </div>
       <big-clock time=${this.state.countdown} height=${this.height}></big-clock>`
