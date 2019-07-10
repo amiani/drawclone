@@ -62,16 +62,31 @@ customElements.define('host-app', class HostApp extends LitElement {
 	handleResize(e) { actions.resize(window.innerWidth, window.innerHeight) }
 
 	static get styles() {
-		return css`
+    return css`
 			.app {
-				display: flex;
-				justify-content: center;
-			}
+        position: relative;
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        justify-content: center;
+        background-image: url(/images/flower-frame.svg);
+        background-size: 100% 100%;
+      }
+
+      #phase-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 90vw;
+        height: 76vh;
+        margin: -38vh 0 0 -45vw;
+      }
 		`
 	}
 	render() {
 		return html`
 			<div class="app">
+        <div id='phase-container'>
 				${{
 					[GamePhase.LOBBY]: html`<host-lobby .state=${this.state} .actions=${actions}></host-lobby>`,
 					[GamePhase.DRAWING]: html`<host-drawing .state=${this.state} .actions=${actions}></host-drawing>`,
@@ -79,7 +94,8 @@ customElements.define('host-app', class HostApp extends LitElement {
 					[GamePhase.PICKING]: html`<host-picking .state=${this.state} .actions=${actions}></host-picking>`,
 					[GamePhase.SCOREBOARD]: html`<host-scoreboard .state=${this.state} .actions=${actions}></host-scoreboard>`,
 					[GamePhase.ENDLOBBY]: html`<host-endlobby .state=${this.state} .actions=${actions}></host-endlobby>`
-				}[this.state.phase]}
+        }[this.state.phase]}
+        </div>
 			</div>
 		`
 	}
