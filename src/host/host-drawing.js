@@ -17,6 +17,8 @@ export default customElements.define('host-drawing', class HostDrawing extends L
   static get styles() {
     return css`
       :host {
+        display: flex;
+        justify-content: center;
         width: 100%;
         height: 100%;
       }`
