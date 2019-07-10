@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit-element'
+import rough from 'roughjs'
 import { WiredCard } from 'wired-elements'
 import draw from '../draw'
 import BigClock from './big-clock'
@@ -20,6 +21,13 @@ export default customElements.define('host-titling', class HostTitling extends L
   firstUpdated() {
     this.canvas = this.shadowRoot.getElementById('drawing')
     this.ctx = this.canvas.getContext('2d')
+
+    this.svg = this.shadowRoot.querySelector('svg')
+    this.rs = rough.svg(this.svg)
+    this.svg.appendChild(this.rs.rectangle(3, 3, this.width-6, this.height-6, {
+      roughness: 2.5,
+      strokeWidth: 20,
+    }))
   }
 
   updated() {
@@ -36,28 +44,36 @@ export default customElements.define('host-titling', class HostTitling extends L
       }
 
       #drawing-container {
-        padding: 60px;
-        background-color: white;
-        -webkit-box-shadow: inset 0px 0px 22px 27px rgba(67,111,198,1);
-        -moz-box-shadow: inset 0px 0px 22px 27px rgba(67,111,198,1);
-        box-shadow: inset 0px 0px 22px 27px rgba(67,111,198,1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
 
-      #card {
-        border: solid black 2px;
+      #drawing-frame {
+        position: relative;
+      }
+      
+      svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 10;
+        background-color: white;
       }
     `
   }
   render() {
-    const length = this.shadowRoot.host.clientWidth < this.shadowRoot.host.clientHeight ?
-      this.shadowRoot.host.clientWidth :
-      this.shadowRoot.host.clientHeight
+    this.height = this.shadowRoot.host.clientHeight*.9
+    console.log(this.height)
+    this.width = this.height/drawingRatio
     return html`
       <div id='drawing-container'>
-        <wired-card id='#card' elevation=5>
-          <canvas id='drawing' width=${length/drawingRatio} height=${length}></canvas>
-        </wired-card>
+        <div id='drawing-frame'>
+          <svg viewBox='0 0 ${this.width} ${this.height}' preserveAspectRatio='none'></svg>
+          <canvas id='drawing' width=${this.width} height=${this.height}></canvas>
+        </div>
       </div>
-      <big-clock time=${this.state.countdown} height=${length}></big-clock>`
+      <big-clock time=${this.state.countdown} height=${this.height}></big-clock>`
   }
 })

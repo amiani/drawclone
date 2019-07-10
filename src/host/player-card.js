@@ -82,7 +82,6 @@ export default customElements.define('player-card', class PlayerCard extends Lit
     `
   }
   render() {
-    console.log(this.color)
     return html`
       <style>
         #card-inner {
