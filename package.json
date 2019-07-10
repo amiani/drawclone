@@ -16,7 +16,7 @@
     "animejs": "^3.0.1",
     "flyd": "^0.2.8",
     "lit-element": "^2.0.1",
-    "lit-html": "^1.0.0",
+    "lit-html": "^1.1.1",
     "patchinko": "^4.1.0",
     "roughjs": "^3.1.0",
     "socket.io": "^2.2.0",
@@ -33,7 +33,7 @@
     "meiosis-tracer": "^2.0.3",
     "owc-dev-server": "^1.0.0",
     "rimraf": "^2.6.3",
-    "rollup": "^1.16.6",
+    "rollup": "^1.16.7",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "lint-staged": {
