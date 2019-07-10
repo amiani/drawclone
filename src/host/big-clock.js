@@ -27,7 +27,11 @@ export default customElements.define('big-clock', class BigClock extends LitElem
     if (this.time > 0)
       this.rc.arc(this.height/2, this.height/2, this.clockWidth, this.clockHeight, (3/2)*Math.PI + (2*Math.PI/30)*(30-this.time), 2*Math.PI+(3/2)*Math.PI, true, {
         stroke: 'black', strokeWidth: 9,
-        fill: '#ee855e'
+        fill: '#ee855e',
+        fillStyle: 'dashed',
+        dashOffset: 30,
+        dashGap: 25,
+        roughness: 2
       })
   }
 
