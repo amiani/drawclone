@@ -19,7 +19,7 @@
     "lit-html": "^1.1.1",
     "patchinko": "^4.1.0",
     "roughjs": "^3.1.0",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "wired-elements": "^1.0.0"
   },
   "devDependencies": {
