@@ -29,7 +29,7 @@
     "@open-wc/eslint-config": "^0.4.1",
     "@open-wc/prettier-config": "^0.1.0",
     "husky": "^1.0.0",
-    "lint-staged": "^8.0.0",
+    "lint-staged": "^13.1.0",
     "meiosis-tracer": "^2.0.3",
     "owc-dev-server": "^1.0.0",
     "rimraf": "^2.6.3",
